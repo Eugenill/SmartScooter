@@ -18,5 +18,4 @@ STEPS TO CREATE AN OBJECT DETECTOR:
 References:
 
 xml_to_csv.py and generate_tfrecord.py from: https://github.com/datitran/raccoon_dataset
-
 bosch_to_pascal.py from: https://github.com/bosch-ros-pkg/bstld
