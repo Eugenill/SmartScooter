@@ -15,5 +15,8 @@ STEPS TO CREATE AN OBJECT DETECTOR:
 6. Edit labelmap.pbtxt. Will be found in CONES/labelmap or TRAFFIC_LIGHT/SIMPLE/labelmap or W_COLORS/labelmap
 7. Run the training with models/research/object_detection/model_main.py
 
+References:
+
 xml_to_csv.py and generate_tfrecord.py from: https://github.com/datitran/raccoon_dataset
+
 bosch_to_pascal.py from: https://github.com/bosch-ros-pkg/bstld
