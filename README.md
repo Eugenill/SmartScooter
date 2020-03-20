@@ -15,7 +15,7 @@
 6. Edit labelmap.pbtxt. Will be found in CONES/labelmap or TRAFFIC_LIGHT/SIMPLE/labelmap or W_COLORS/labelmap
 7. Run the training with models/research/object_detection/model_main.py
 
-Follow the instruccions on the *ipynb on the folders to create the object detector correctly
+*Follow the instruccions on the **ipynb** on the folders to create the object detector correctly
 
 **IMPORTANT:**
 - Once you have created the graph.pbtxt with all the frozen_inference_graph.pb, REPLACE "AddV2" for "Add" in the graph.pbtxt. And remember to work with the latest version of opencv (4.2)
