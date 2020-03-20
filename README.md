@@ -1,7 +1,7 @@
 **ADDING NECESSARY REPOSITORIES:**
 
-1. ADD the TensorFlow Object Dtection API with: >git clone https://github.com/tensorflow/models.git
-2. ADD this repository with: >git clone https://github.com/Eugenill/SmartScooter.git
+1. ADD the TensorFlow Object Dtection API with:  git clone https://github.com/tensorflow/models.git
+2. ADD this repository with:  git clone https://github.com/Eugenill/SmartScooter.git
 
 **STEPS TO CREATE AN OBJECT DETECTOR:**
 **Follow the instruccions on the _ipynb_ on the folders to create the object detector correctly**
