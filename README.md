@@ -1,9 +1,10 @@
 **ADDING NECESSARY REPOSITORIES:**
 
-1. ADD the TensorFlow Object Dtection API with: git clone https://github.com/tensorflow/models.git
-2. ADD this repository with: git clone https://github.com/Eugenill/SmartScooter.git
+1. ADD the TensorFlow Object Dtection API with: >git clone https://github.com/tensorflow/models.git
+2. ADD this repository with: >git clone https://github.com/Eugenill/SmartScooter.git
 
 **STEPS TO CREATE AN OBJECT DETECTOR:**
+**Follow the instruccions on the _ipynb_ on the folders to create the object detector correctly**
 
 1. Import Images of your dataset to models/research/object_detection/images/"name of the datset"/train and /test
 2. Import xml (or yaml) annotations of your dataset in models/research/object_detection/annotations/"name of the dataset"
@@ -14,8 +15,6 @@
 5. Edit "model name".config, in config folders in this repo
 6. Edit labelmap.pbtxt. Will be found in CONES/labelmap or TRAFFIC_LIGHT/SIMPLE/labelmap or W_COLORS/labelmap
 7. Run the training with models/research/object_detection/model_main.py
-
-*Follow the instruccions on the **ipynb** on the folders to create the object detector correctly
 
 **IMPORTANT:**
 - Once you have created the graph.pbtxt with all the frozen_inference_graph.pb, REPLACE "AddV2" for "Add" in the graph.pbtxt. And remember to work with the latest version of opencv (4.2)
