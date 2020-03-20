@@ -4,6 +4,7 @@
 2. ADD this repository with:  git clone https://github.com/Eugenill/SmartScooter.git
 
 **STEPS TO CREATE AN OBJECT DETECTOR:**
+
 **Follow the instruccions on the _ipynb_ on the folders to create the object detector correctly**
 
 1. Import Images of your dataset to models/research/object_detection/images/"name of the datset"/train and /test
