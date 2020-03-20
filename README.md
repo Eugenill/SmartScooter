@@ -19,6 +19,7 @@ Follow the instruccions on the *ipynb on the folders to create the object detect
 
 **IMPORTANT:**
 - Once you have created the graph.pbtxt with all the frozen_inference_graph.pb, REPLACE "AddV2" for "Add" in the graph.pbtxt. And remember to work with the latest version of opencv (4.2)
+
 **References:**
 
 - xml_to_csv.py and generate_tfrecord.py from: https://github.com/datitran/raccoon_dataset
