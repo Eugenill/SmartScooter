@@ -24,4 +24,4 @@ Follow the instruccions on the *ipynb on the folders to create the object detect
 
 - xml_to_csv.py and generate_tfrecord.py from: https://github.com/datitran/raccoon_dataset
 - bosch_to_pascal.py from: https://github.com/bosch-ros-pkg/bstld
-- Object Dtection API from: https://github.com/tensorflow/models
+- TensorFlow Object Dtection API from: https://github.com/tensorflow/models
