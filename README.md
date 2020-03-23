@@ -2,7 +2,7 @@
 
 ## Create the model
 
-To create the model download a ipynb from:
+To create the model git clone this repository to SmartScooter1996 google accountin Colab, and run the ipynb:
 - [Cones](CONES/Create_object_detctor.ipynb)
 - [TL](TRAFFIC_LIGHTS/TL_W_COLORS/Bosch_TL_DATASET.ipynb)
 
