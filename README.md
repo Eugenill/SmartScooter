@@ -1,27 +1,21 @@
-**ADDING NECESSARY REPOSITORIES:**
+# SmartScooter Object Detection files
 
-1. ADD the TensorFlow Object Dtection API with:  git clone https://github.com/tensorflow/models.git
-2. ADD this repository with:  git clone https://github.com/Eugenill/SmartScooter.git
+## Create the model
 
-**STEPS TO CREATE AN OBJECT DETECTOR:**
+To create the model download a ipynb from:
+- [Cones](CONES/Create_object_detctor.ipynb)
+- [TL](TRAFFIC_LIGHTS/TL_W_COLORS/Bosch_TL_DATASET.ipynb)
 
-**Follow the instruccions on the _ipynb_ on the folders to create the object detector correctly**
+## Inference time
+1. Once you have created the graph.pbtxt with all the frozen_inference_graph.pb, REPLACE "AddV2" for "Add" in the graph.pbtxt. And remember to work with the latest version of opencv (4.2)
+2. Use prediction files:
+    - [Cones](CONES/Prediction)
+    - [TL](TRAFFIC_LIGHTS/Prediction)
+    - pred.py for photo inference and vide_object_detection.py for video inference
 
-1. Import Images of your dataset to models/research/object_detection/images/"name of the datset"/train and /test
-2. Import xml (or yaml) annotations of your dataset in models/research/object_detection/annotations/"name of the dataset"
-3. Convert to csv annotations:
-    1. From xml: run xml_to_csv.py in CONES or TRAFFIC_LIGHT folders
-    2. From yaml: run bosch_to_pascal.py to convert them into xml, and xml_to_csv.py to csv in TL_W_COLORS
-4. Generate test.record and train.record running generate_tf_record.py. Will be found in CONES or TRAFFIC_LIGHT/SIMPLE or W_COLORS
-5. Edit "model name".config, in config folders in this repo
-6. Edit labelmap.pbtxt. Will be found in CONES/labelmap or TRAFFIC_LIGHT/SIMPLE/labelmap or W_COLORS/labelmap
-7. Run the training with models/research/object_detection/model_main.py
-
-**IMPORTANT:**
-- Once you have created the graph.pbtxt with all the frozen_inference_graph.pb, REPLACE "AddV2" for "Add" in the graph.pbtxt. And remember to work with the latest version of opencv (4.2)
-
-**References:**
+## References:
 
 - xml_to_csv.py and generate_tfrecord.py from: https://github.com/datitran/raccoon_dataset
 - bosch_to_pascal.py from: https://github.com/bosch-ros-pkg/bstld
 - TensorFlow Object Dtection API from: https://github.com/tensorflow/models
+- OpenCV latest version
