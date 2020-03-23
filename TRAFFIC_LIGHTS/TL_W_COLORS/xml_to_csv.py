@@ -27,9 +27,9 @@ def xml_to_csv(path):
 
 def main():
   for folder in ['train', 'test']:
-        image_path = os.path.join(os.getcwd(), ('/content/drive/My Drive/SMART_SCOOTER/models/research/object_detection/'+folder+'_xml_annotations'))
+        image_path = os.path.join(os.getcwd(), ('/content/drive/My Drive/SMART_SCOOTER/annotations/TL/'+folder+'_xml_annotations'))
         xml_df = xml_to_csv(image_path)
-        xml_df.to_csv(('/content/drive/My Drive/SMART_SCOOTER/models/research/object_detection/'+folder+'_csv_annotations/'+folder+'_labels.csv'), index=None)
+        xml_df.to_csv(('/content/drive/My Drive/SMART_SCOOTER/annotations/TL/'+folder+'_csv_annotations/'+folder+'_labels.csv'), index=None)
   print('Successfully converted xml to csv.')
 
 
