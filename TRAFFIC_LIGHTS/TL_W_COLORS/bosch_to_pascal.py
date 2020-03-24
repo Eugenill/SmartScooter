@@ -17,14 +17,12 @@ import xml.etree.cElementTree as ET
 def write_xml(savedir, image, imgWidth, imgHeight,
               depth=3, pose="Unspecified"):
 	boxes = image['boxes']
-	impath = image['path']
+	impath = image['path'].replace('png','jpg')
 #-------------NEW
 	onlypath=impath.split('./')[1]
 	second_folder=onlypath.split('/')[2]
 	imagename = impath.split('/')[-1]
-	imagename=imagename.replace('png','jpg')
-	path_w_noimage=onlypath.split(imagename)[0]
-  	path_w_noimage=path_w_noimage.replace('rgb','rgb_jpg')
+	path_w_noimage=onlypath.split(imagename)[0].replace('rgb','rgb_jpg')
 	currentfolder = savedir.split("\\")[-1]
 	if 'train' in onlypath:		
 		if second_folder not in os.listdir("/content/drive/My Drive/SMART_SCOOTER/images/TL/rgb_jpg/train"): 
