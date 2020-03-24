@@ -20,7 +20,7 @@ def write_xml(savedir, image, imgWidth, imgHeight,
 	impath = image['path']
 #-------------NEW
 	onlypath=impath.split('./')[1]
-	second_folder=onlypath.split('/').[1]
+	second_folder=onlypath.split('/')[2]
 	imagename = impath.split('/')[-1]
 	path_w_noimage=onlypath.split(imagename)[0]
 	currentfolder = savedir.split("\\")[-1]
