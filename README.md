@@ -3,8 +3,8 @@
 ## Create the model
 
 To create the model, git clone this repository to SmartScooter1996 google account in Colab, and follow the instructions in one of this two ipynb:
-- [Cones](CONES/CONE object detctor.ipynb)
-- [TL](TRAFFIC_LIGHTS/TL object detector.ipynb)
+- [Cones](CONES/CONE_object_detctor.ipynb)
+- [TL](TRAFFIC_LIGHTS/TL_object_detector.ipynb)
 
 ## Inference time
 1. Once you have created the graph.pbtxt with the frozen_inference_graph.pb, and replaced "AddV2" for "Add" in the graph.pbtxt. We have to export the frozen_inference_graph.pb and the graph.pbtxt (i.e. export all the new_model in zip format). 
