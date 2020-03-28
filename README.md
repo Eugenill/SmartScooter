@@ -12,7 +12,7 @@ To create the model, git clone this repository to SmartScooter1996 google accoun
     
         [CONE](CONES/new_models)
         
-        [TL](TRAFFIC_LIGHTS/new_models)
+        [TL](TRAFFIC_LIGHTS/TL_W_COLORS/new_models)
 2. Use prediction scripts woth OpenCv newtwork, remember to use the latest OpenCv version:
     - [Cones](CONES/Prediction)
     - [TL](TRAFFIC_LIGHTS/Prediction)
