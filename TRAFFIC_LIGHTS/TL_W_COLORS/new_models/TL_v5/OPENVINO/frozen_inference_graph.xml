@@ -1747,7 +1747,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="81" name="BoxPredictor_0/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127932_const" type="Const">
+		<layer id="81" name="BoxPredictor_0/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127940_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -2340,7 +2340,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="109" name="BoxPredictor_1/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127920_const" type="Const">
+		<layer id="109" name="BoxPredictor_1/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127930_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -2581,7 +2581,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="121" name="BoxPredictor_2/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127930_const" type="Const">
+		<layer id="121" name="BoxPredictor_2/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127932_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -2822,7 +2822,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="133" name="BoxPredictor_3/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127926_const" type="Const">
+		<layer id="133" name="BoxPredictor_3/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127924_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3063,7 +3063,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="145" name="BoxPredictor_4/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127928_const" type="Const">
+		<layer id="145" name="BoxPredictor_4/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127936_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3304,7 +3304,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="157" name="BoxPredictor_5/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127934_const" type="Const">
+		<layer id="157" name="BoxPredictor_5/BoxEncodingPredictor/BiasAdd/Reshape/Cast_127914_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3377,7 +3377,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="160" name="do_reshape_loc/Cast_127916_const" type="Const">
+		<layer id="160" name="do_reshape_loc/Cast_127926_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>2</dim>
@@ -3490,7 +3490,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="166" name="BoxPredictor_0/ClassPredictor/BiasAdd/Reshape/Cast_127940_const" type="Const">
+		<layer id="166" name="BoxPredictor_0/ClassPredictor/BiasAdd/Reshape/Cast_127918_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3605,7 +3605,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="172" name="BoxPredictor_1/ClassPredictor/BiasAdd/Reshape/Cast_127936_const" type="Const">
+		<layer id="172" name="BoxPredictor_1/ClassPredictor/BiasAdd/Reshape/Cast_127934_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3720,7 +3720,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="178" name="BoxPredictor_2/ClassPredictor/BiasAdd/Reshape/Cast_127918_const" type="Const">
+		<layer id="178" name="BoxPredictor_2/ClassPredictor/BiasAdd/Reshape/Cast_127920_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3835,7 +3835,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="184" name="BoxPredictor_3/ClassPredictor/BiasAdd/Reshape/Cast_127938_const" type="Const">
+		<layer id="184" name="BoxPredictor_3/ClassPredictor/BiasAdd/Reshape/Cast_127928_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -3950,7 +3950,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="190" name="BoxPredictor_4/ClassPredictor/BiasAdd/Reshape/Cast_127942_const" type="Const">
+		<layer id="190" name="BoxPredictor_4/ClassPredictor/BiasAdd/Reshape/Cast_127922_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -4065,7 +4065,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="196" name="BoxPredictor_5/ClassPredictor/BiasAdd/Reshape/Cast_127922_const" type="Const">
+		<layer id="196" name="BoxPredictor_5/ClassPredictor/BiasAdd/Reshape/Cast_127942_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>3</dim>
@@ -4138,7 +4138,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="199" name="do_ExpandDims_conf/Cast_127924_const" type="Const">
+		<layer id="199" name="do_ExpandDims_conf/Cast_127916_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>4</dim>
@@ -4188,7 +4188,7 @@
 				</port>
 			</output>
 		</layer>
-		<layer id="202" name="do_reshape_conf/Cast_127914_const" type="Const">
+		<layer id="202" name="do_reshape_conf/Cast_127938_const" type="Const">
 			<output>
 				<port id="1" precision="I32">
 					<dim>2</dim>
@@ -4243,7 +4243,7 @@
 			</output>
 		</layer>
 		<layer id="205" name="PriorBoxClustered_1" type="PriorBoxClustered">
-			<data clip="0" flip="0" height="166.01957413491198,135.55441408342273,104.99999940000001,121.2435558370011,90.94403900404338,125.49900311954674" offset="0.5" variance="0.1,0.1,0.2,0.2" width="66.40783131416053,81.33265116114191,104.99999940000001,90.93266687775082,121.22839489798591,125.49900311954674"/>
+			<data clip="0" flip="0" height="166.01957715883992,135.5544171172596,105.0,121.24355652982142,90.94403611246923,125.49900398011134" offset="0.5" variance="0.1,0.1,0.2,0.2" width="66.40783086353596,81.33265027035574,105.0,90.93266739736605,121.22840013792145,125.49900398011134"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4267,7 +4267,7 @@
 			</output>
 		</layer>
 		<layer id="206" name="PriorBoxClustered_2" type="PriorBoxClustered">
-			<data clip="0" flip="0" height="237.17081965062667,193.6491625336915,149.99999880000001,173.2050793712471,129.92005542310184,171.02631229141326" offset="0.5" variance="0.1,0.1,0.2,0.2" width="94.86833023195886,116.18950139319816,149.99999880000001,129.90380952843532,173.18342088698915,171.02631229141326"/>
+			<data clip="0" flip="0" height="237.17082451262843,193.64916731037084,150.0,173.20508075688775,129.92005158924175,171.0263137648707" offset="0.5" variance="0.1,0.1,0.2,0.2" width="94.86832980505139,116.1895003862225,150.0,129.9038105676658,173.18342876845924,171.0263137648707"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4291,7 +4291,7 @@
 			</output>
 		</layer>
 		<layer id="207" name="PriorBoxClustered_3" type="PriorBoxClustered">
-			<data clip="0" flip="0" height="308.32206516634136,251.74391098396032,194.99999820000002,225.1666029054931,168.89607184216032,216.33307444771364" offset="0.5" variance="0.1,0.1,0.2,0.2" width="123.3288291497572,151.0463516252544,194.99999820000002,168.87495217911982,225.13844687599246,216.33307444771364"/>
+			<data clip="0" flip="0" height="308.322071866417,251.7439175034821,195.0,225.16660498395404,168.8960670660143,216.33307652783938" offset="0.5" variance="0.1,0.1,0.2,0.2" width="123.3288287465668,151.04635050208927,195.0,168.8749537379655,225.13845739899702,216.33307652783938"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4315,7 +4315,7 @@
 			</output>
 		</layer>
 		<layer id="208" name="PriorBoxClustered_4" type="PriorBoxClustered">
-			<data clip="0" flip="0" height="379.473310682056,309.83865943422904,239.99999760000003,277.1281264397391,207.87208826121878,261.5339339282763" offset="0.5" variance="0.1,0.1,0.2,0.2" width="151.78932806755552,185.90320185731062,239.99999760000003,207.84609482980431,277.0934728649957,261.5339339282763"/>
+			<data clip="0" flip="0" height="379.47331922020555,309.8386676965934,240.0,277.1281292110204,207.87208254278684,261.5339366124404" offset="0.5" variance="0.1,0.1,0.2,0.2" width="151.78932768808224,185.90320061795603,240.0,207.84609690826528,277.0934860295348,261.5339366124404"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4339,7 +4339,7 @@
 			</output>
 		</layer>
 		<layer id="209" name="PriorBoxClustered_5" type="PriorBoxClustered">
-			<data clip="0" flip="0" height="450.6245561977707,367.93340788449785,284.999997,329.0896499739851,246.8481046802772,292.4038288053014" offset="0.5" variance="0.1,0.1,0.2,0.2" width="180.24982698535382,220.76005208936687,284.999997,246.81723748048879,329.048498853999,292.4038288053014"/>
+			<data clip="0" flip="0" height="450.624566573994,367.9334178897046,285.0,329.0896534380867,246.84809801955936,292.4038303442689" offset="0.5" variance="0.1,0.1,0.2,0.2" width="180.24982662959764,220.76005073382274,285.0,246.817240078565,329.04851466007256,292.4038303442689"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4405,7 +4405,7 @@
 			</output>
 		</layer>
 		<layer id="211" name="DetectionOutput" type="DetectionOutput">
-			<data clip_after_nms="1" clip_before_nms="0" code_type="caffe.PriorBoxParameter.CENTER_SIZE" confidence_threshold="9.9999999e-09" input_height="1" input_width="1" keep_top_k="100" nms_threshold="0.60000002" normalized="1" num_classes="5" pad_mode="caffe.ResizeParameter.CONSTANT" resize_mode="caffe.ResizeParameter.WARP" share_location="1" top_k="100" variance_encoded_in_target="0"/>
+			<data clip_after_nms="1" clip_before_nms="0" code_type="caffe.PriorBoxParameter.CENTER_SIZE" confidence_threshold="1e-08" input_height="1" input_width="1" keep_top_k="100" nms_threshold="0.6" normalized="1" num_classes="5" pad_mode="caffe.ResizeParameter.CONSTANT" resize_mode="caffe.ResizeParameter.WARP" share_location="1" top_k="100" variance_encoded_in_target="0"/>
 			<input>
 				<port id="0">
 					<dim>1</dim>
@@ -4707,7 +4707,7 @@
 			<scale_values value="()"/>
 			<silent value="False"/>
 			<stream_output value="False"/>
-			<tensorflow_object_detection_api_pipeline_config value="DIR/pipeline.config"/>
+			<tensorflow_object_detection_api_pipeline_config value="DIR/TL_5.config"/>
 			<tensorflow_use_custom_operations_config value="DIR/ssd_support_api_v1.15.json"/>
 			<transformations_config value="DIR/ssd_support_api_v1.15.json"/>
 			<unset unset_cli_parameters="batch, disable_fusing, disable_gfusing, finegrain_fusing, input, input_checkpoint, input_meta_graph, input_shape, output, placeholder_shapes, saved_model_dir, saved_model_tags, scale, tensorboard_logdir, tensorflow_custom_layer_libraries, tensorflow_custom_operations_config_update, tensorflow_operation_patterns, tensorflow_subgraph_patterns"/>
