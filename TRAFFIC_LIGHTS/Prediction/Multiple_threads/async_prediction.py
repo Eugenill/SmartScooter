@@ -133,6 +133,7 @@ def main():
     render_time = 0
     if is_async_mode:
         ret, frame = cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         frame_h, frame_w = frame.shape[:2]
 
     print("To close the application, press 'CTRL+C' here or switch to the output window and press ESC key")
@@ -141,8 +142,11 @@ def main():
     while cap.isOpened():
         if is_async_mode:
             ret, next_frame = cap.read()
+            next_frame = cv2.cvtColor(next_frame, cv2.COLOR_RGB2BGR)
+
         else:
             ret, frame = cap.read()
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             if ret:
                 frame_h, frame_w = frame.shape[:2]
         if not ret:
