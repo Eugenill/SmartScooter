@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+
+#Starting model
+#python3 async_prediction.py --model ../TL_W_COLORS/new_models/TL_v5/OPENVINO/IR10,FP16/frozen_inference_graph.xml --input video.mp4
+
+# Mosquitto broker
+#mosquitto_sub -t '$SYS/#' -v
+
+#Subscribe to the traffic light topic
+#mosquitto_sub -d -t traffic_lights
+
+
 """
  Copyright (C) 2018-2019 Intel Corporation
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +30,11 @@ from argparse import ArgumentParser, SUPPRESS
 import cv2
 import time
 import logging as log
+import paho.mqtt.client as mqtt
 
 from openvino.inference_engine import IENetwork, IECore
+
+
 
 
 def build_argparser():
@@ -47,6 +61,13 @@ def build_argparser():
 
 
 def main():
+
+    # Creating client
+    client = mqtt.Client(client_id='traffic_light_detector')
+
+    # Connect to broker
+    client.connect("127.0.0.1",1883)
+    CLASSES = ["off","green","yellow","red"]
     log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
     args = build_argparser().parse_args()
     model_xml = args.model
@@ -156,12 +177,17 @@ def main():
                     xmax = int(obj[5] * frame_w)
                     ymax = int(obj[6] * frame_h)
                     class_id = int(obj[1])
+                    class_name = CLASSES[class_id-1]
                     # Draw box and label\class_id
                     color = (min(class_id * 12.5, 255), min(class_id * 7, 255), min(class_id * 5, 255))
                     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color, 2)
-                    det_label = labels_map[class_id] if labels_map else str(class_id)
-                    cv2.putText(frame, det_label + ' ' + str(round(obj[2] * 100, 1)) + ' %', (xmin, ymin - 7),
+                    #det_label = labels_map[class_id] if labels_map else str(class_id)
+                    cv2.putText(frame, class_name + ' ' + str(round(obj[2] * 100, 1)) + ' %', (xmin, ymin - 7),
                                 cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
+
+                    # Publish through MQTT to Node-red
+                    ret = client.publish("traffic_lights",class_name + ' ' + str(round(obj[2] * 100, 1)) + ' %')
+                    client.loop()
 
             # Draw performance stats
             inf_time_message = "Inference time: N\A for async mode" if is_async_mode else \
