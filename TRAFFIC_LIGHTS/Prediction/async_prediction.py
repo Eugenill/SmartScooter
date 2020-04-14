@@ -43,7 +43,6 @@ def build_argparser():
     args.add_argument("-pt", "--prob_threshold", help="Optional. Probability threshold for detections filtering",
                       default=0.5, type=float)
     args.add_argument("--no_show", help="Optional. Don't show output", action='store_true')
-
     return parser
 
 
