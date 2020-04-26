@@ -27,7 +27,8 @@ To create the model, git clone this repository to SmartScooter1996 google accoun
     - Download the last version (2020.1) Openvino Raspberry, following this [steps](https://www.pyimagesearch.com/2019/04/08/openvino-opencv-and-movidius-ncs-on-the-raspberry-pi/)
     - Use this [prediction script](TRAFFIC_LIGHTS/Prediction/assync_prediction.py) to predict with multiprocessing with NCS conected, (BRG2RGB must be added!)
     
-5. Modify [prediction script](TRAFFIC_LIGHTS/Prediction/assync_prediction.py) to send the detection messages throw MQTT to the Nodered App for the Scooter implementation (Soon)
+5. Modify [prediction script](TRAFFIC_LIGHTS/Prediction/assync_prediction.py) to send the detection messages throw MQTT to the Nodered App for the Scooter implementation
+`python3 async_prediction.py -m ../TL_W_COLORS/new_models/TL_v5/OPENVINO/IR7,FP16/frozen_inference_graph.xml -i video.mp4 -d MIRIAD` OTHER `[-pt PROB_THRESHOLD] [--no_show]`
 
 ## References:
 
