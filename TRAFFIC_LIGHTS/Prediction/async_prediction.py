@@ -30,10 +30,10 @@ def build_argparser():
     args = parser.add_argument_group('Options')
     args.add_argument('-h', '--help', action='help', default=SUPPRESS, help='Show this help message and exit.')
     args.add_argument("-m", "--model", help="Required. Path to an .xml file with a trained model.",
-                      required=True, type=str)
+                      default="../TL_W_COLORS/new_models/TL_v5/OPENVINO/IR7,FP16/frozen_inference_graph.xml", type=str)
     args.add_argument("-i", "--input",
                       help="Required. Path to video file or image. 'cam' for capturing video stream from camera",
-                      required=True, type=str)
+                      default="video.mp4", type=str)
     args.add_argument("-l", "--cpu_extension",
                       help="Optional. Required for CPU custom layers. Absolute path to a shared library with the "
                            "kernels implementations.", type=str, default=None)
