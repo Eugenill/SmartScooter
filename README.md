@@ -3,7 +3,7 @@
 ## Create the model
 
 To create the model, git clone this repository to SmartScooter1996 google account in Colab, and follow the instructions in one of this two ipynb:
-- [CONE](Object_Detectors/CONES/CONE_object_detctor.ipynb)
+- [CONE](Object_Detectors/CONES/CONES_object_detctor.ipynb)
 - [TL](Object_Detectors/TRAFFIC_LIGHTS/TL_object_detector.ipynb)
 
 ## Inference time
