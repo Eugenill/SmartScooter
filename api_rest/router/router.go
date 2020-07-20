@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Eugenill/SmartScooter/api_rest/serve/handlers"
+	"github.com/Eugenill/SmartScooter/api_rest/handlers"
 	"github.com/go-chi/chi"
 )
 
