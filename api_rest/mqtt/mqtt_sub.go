@@ -47,7 +47,7 @@ func CreateClientOptions(clientId string, mqttConf MQTTConfig) *mqtt.ClientOptio
 	return opts
 }
 
-func SubscribeToTopic(mqttConf MQTTConfig, topic string) {
+func ListenToTopic(mqttConf MQTTConfig, topic string) {
 	client := ConnectToBroker(mqttConf.ClientID, mqttConf)
 	client.Subscribe(mqttConf.Pretopic+topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 		fmt.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))

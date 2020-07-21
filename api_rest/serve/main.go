@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/Eugenill/SmartScooter/api_rest/errors"
 	"github.com/Eugenill/SmartScooter/api_rest/mqtt"
-	"github.com/Eugenill/SmartScooter/api_rest/mqtt_client"
 	"github.com/Eugenill/SmartScooter/api_rest/router"
 	"net/http"
 	"net/url"
@@ -23,14 +22,12 @@ func main() {
 		ClientID: mqtt.MQTTCLientID,
 	}
 
-	topics := []string{"vehicle"}
-
-	for _, topic := range topics {
-		mqtt.SubscribeToTopic(mqttConfig, topic)
-	}
-	mqtt_client.Publish("vehicle", mqttConfig)
+	topics := []string{"timer", "detection"}
+	go mqtt.ListenToTopic(mqttConfig, topics[0])
+	go mqtt.ListenToTopic(mqttConfig, topics[1])
+	//mqtt_client.PublishTimer("timer", mqttConfig)
 
 	//4. Init router
-	err := http.ListenAndServe("localhost:1234", router.SetRouter("Ford Mustang"))
+	err := http.ListenAndServe("localhost:1234", router.SetRouter(mqttConfig))
 	errors.Catch(err)
 }
