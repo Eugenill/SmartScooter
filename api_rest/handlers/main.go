@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/Eugenill/SmartScooter/api_rest/errors"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"log"
 	"net/http"
 )
