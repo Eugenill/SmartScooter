@@ -13,3 +13,10 @@ func GetVehicles(name string) http.HandlerFunc {
 		errors.Catch(err)
 	}
 }
+
+func Save_detection(f http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		f(w, r)
+
+	}
+}
