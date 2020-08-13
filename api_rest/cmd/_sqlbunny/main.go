@@ -8,6 +8,7 @@ import (
 	"github.com/sqlbunny/sqlbunny/gen/stdtypes"
 )
 
+//USAGE: go run cmd/_sqlbunny/main.go gen
 func main() {
 	Run(
 		&migration.Plugin{
@@ -29,7 +30,7 @@ func main() {
 		)),
 
 		Type("helmet_status", Enum(
-			"conected",
+			"connected",
 			"not_connected",
 			"connection_error",
 		)),

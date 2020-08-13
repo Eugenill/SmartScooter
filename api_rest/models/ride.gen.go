@@ -17,8 +17,8 @@ import (
 
 type Ride struct {
 	ID         RideID         `bunny:"id" json:"id" `
-	Distance   float32        `json:"distance" bunny:"distance" `
-	StartedAt  time.Time      `json:"started_at" bunny:"started_at" `
+	Distance   float32        `bunny:"distance" json:"distance" `
+	StartedAt  time.Time      `bunny:"started_at" json:"started_at" `
 	FinishedAt _import00.Time `bunny:"finished_at" json:"finished_at" `
 	R          *rideR         `json:"-" toml:"-" yaml:"-"`
 	L          rideL          `json:"-" toml:"-" yaml:"-"`

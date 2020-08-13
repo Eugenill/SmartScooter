@@ -16,7 +16,7 @@ import (
 
 type User struct {
 	ID           UserID         `bunny:"id" json:"id" `
-	Login        string         `bunny:"login" json:"login" `
+	Login        string         `json:"login" bunny:"login" `
 	SecretHash   string         `bunny:"secret_hash" json:"secret_hash" `
 	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
 	IsDeleted    bool           `bunny:"is_deleted" json:"is_deleted" `

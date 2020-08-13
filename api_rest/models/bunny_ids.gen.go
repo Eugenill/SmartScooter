@@ -11,10 +11,10 @@ func IDFromString(s string) (interface{}, error) {
 		return nil, fmt.Errorf("Wrong parts count, expected 2 got %d", len(parts))
 	}
 	switch parts[0] {
-	case "v":
-		return VehicleIDFromString(s)
 	case "h":
 		return HelmetIDFromString(s)
+	case "v":
+		return VehicleIDFromString(s)
 	case "r":
 		return RideIDFromString(s)
 	case "usr":
@@ -24,8 +24,8 @@ func IDFromString(s string) (interface{}, error) {
 }
 
 var idPrefixes = map[string]string{
-	"v":   "vehicle_id",
 	"h":   "helmet_id",
+	"v":   "vehicle_id",
 	"r":   "ride_id",
 	"usr": "user_id",
 }
