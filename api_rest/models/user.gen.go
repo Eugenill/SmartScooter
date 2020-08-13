@@ -16,7 +16,7 @@ import (
 
 type User struct {
 	ID           UserID         `bunny:"id" json:"id" `
-	Login        string         `json:"login" bunny:"login" `
+	Login        string         `bunny:"login" json:"login" `
 	SecretHash   string         `bunny:"secret_hash" json:"secret_hash" `
 	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
 	IsDeleted    bool           `bunny:"is_deleted" json:"is_deleted" `
@@ -42,7 +42,7 @@ var UserColumns = struct {
 }
 
 type userR struct {
-	AllDetections AllDetectionSlice
+	RideDetections RideDetectionSlice
 }
 
 type userL struct{}
@@ -134,23 +134,23 @@ func (q userQuery) Exists(ctx context.Context) (bool, error) {
 	return count > 0, nil
 }
 
-func (o *User) AllDetections(mods ...qm.QueryMod) allDetectionQuery {
+func (o *User) RideDetections(mods ...qm.QueryMod) rideDetectionQuery {
 	queryMods := []qm.QueryMod{
 
 		qm.Where("\"user_id\"=?", o.ID),
 	}
 
 	queryMods = append(queryMods, mods...)
-	query := AllDetections(queryMods...)
-	queries.SetFrom(query.Query, "\"all_detection\"")
+	query := RideDetections(queryMods...)
+	queries.SetFrom(query.Query, "\"ride_detection\"")
 	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"all_detection\".*"})
+		queries.SetSelect(query.Query, []string{"\"ride_detection\".*"})
 	}
 
 	return query
 }
 
-func (userL) LoadAllDetections(ctx context.Context, slice []*User) error {
+func (userL) LoadRideDetections(ctx context.Context, slice []*User) error {
 	args := make([]interface{}, len(slice)*1)
 	for i, obj := range slice {
 		if obj.R == nil {
@@ -167,13 +167,13 @@ func (userL) LoadAllDetections(ctx context.Context, slice []*User) error {
 	)
 	query := NewQuery(
 		qm.Select("f.*"),
-		qm.From("\"all_detection\" AS f"),
+		qm.From("\"ride_detection\" AS f"),
 		qm.Where(where, args...),
 	)
 
-	var resultSlice []*AllDetection
+	var resultSlice []*RideDetection
 	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice AllDetection: %w", err)
+		return errors.Errorf("failed to bind eager loaded slice RideDetection: %w", err)
 	}
 
 	if len(resultSlice) == 0 {
@@ -184,7 +184,7 @@ func (userL) LoadAllDetections(ctx context.Context, slice []*User) error {
 		for _, foreign := range resultSlice {
 			if local.ID == foreign.UserID {
 
-				local.R.AllDetections = append(local.R.AllDetections, foreign)
+				local.R.RideDetections = append(local.R.RideDetections, foreign)
 
 			}
 		}

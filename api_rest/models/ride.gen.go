@@ -37,7 +37,7 @@ var RideColumns = struct {
 }
 
 type rideR struct {
-	AllDetection *AllDetection
+	Detections RideDetectionSlice
 }
 
 type rideL struct{}
@@ -129,23 +129,23 @@ func (q rideQuery) Exists(ctx context.Context) (bool, error) {
 	return count > 0, nil
 }
 
-func (o *Ride) AllDetection(mods ...qm.QueryMod) allDetectionQuery {
+func (o *Ride) Detections(mods ...qm.QueryMod) rideDetectionQuery {
 	queryMods := []qm.QueryMod{
 
 		qm.Where("\"ride_id\"=?", o.ID),
 	}
 
 	queryMods = append(queryMods, mods...)
-	query := AllDetections(queryMods...)
-	queries.SetFrom(query.Query, "\"all_detection\"")
+	query := RideDetections(queryMods...)
+	queries.SetFrom(query.Query, "\"ride_detection\"")
 	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"all_detection\".*"})
+		queries.SetSelect(query.Query, []string{"\"ride_detection\".*"})
 	}
 
 	return query
 }
 
-func (rideL) LoadAllDetection(ctx context.Context, slice []*Ride) error {
+func (rideL) LoadDetections(ctx context.Context, slice []*Ride) error {
 	args := make([]interface{}, len(slice)*1)
 	for i, obj := range slice {
 		if obj.R == nil {
@@ -162,13 +162,13 @@ func (rideL) LoadAllDetection(ctx context.Context, slice []*Ride) error {
 	)
 	query := NewQuery(
 		qm.Select("f.*"),
-		qm.From("\"all_detection\" AS f"),
+		qm.From("\"ride_detection\" AS f"),
 		qm.Where(where, args...),
 	)
 
-	var resultSlice []*AllDetection
+	var resultSlice []*RideDetection
 	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice AllDetection: %w", err)
+		return errors.Errorf("failed to bind eager loaded slice RideDetection: %w", err)
 	}
 
 	if len(resultSlice) == 0 {
@@ -179,8 +179,7 @@ func (rideL) LoadAllDetection(ctx context.Context, slice []*Ride) error {
 		for _, foreign := range resultSlice {
 			if local.ID == foreign.RideID {
 
-				local.R.AllDetection = foreign
-				break
+				local.R.Detections = append(local.R.Detections, foreign)
 
 			}
 		}

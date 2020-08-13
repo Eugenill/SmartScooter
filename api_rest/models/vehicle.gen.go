@@ -17,7 +17,7 @@ type Vehicle struct {
 	ID          string      `bunny:"id" json:"id" `
 	Token       string      `bunny:"token" json:"token" `
 	NumberPlate string      `bunny:"number_plate" json:"number_plate" `
-	VehicleZone VehicleZone `bunny:"vehicle_zone" json:"vehicle_zone" `
+	VehicleZone VehicleZone `json:"vehicle_zone" bunny:"vehicle_zone" `
 	HelmetID    HelmetID    `bunny:"helmet_id" json:"helmet_id" `
 	R           *vehicleR   `json:"-" toml:"-" yaml:"-"`
 	L           vehicleL    `json:"-" toml:"-" yaml:"-"`

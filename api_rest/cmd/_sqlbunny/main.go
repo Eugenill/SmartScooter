@@ -8,7 +8,9 @@ import (
 	"github.com/sqlbunny/sqlbunny/gen/stdtypes"
 )
 
-//USAGE: go run cmd/_sqlbunny/main.go gen
+//USAGE:  go run ./cmd/_sqlbunny/main.go gen
+// go run ./cmd/_sqlbunny/main.go migration gen
+
 func main() {
 	Run(
 		&migration.Plugin{
@@ -34,10 +36,18 @@ func main() {
 			"not_connected",
 			"connection_error",
 		)),
+		Type("traffic_sign", Enum(
+			"stop",
+			"yield",
+			"vel_10",
+			"vel_20",
+			"vel_30",
+		)),
 
 		Type("detection", Struct(
 			Field("traffic_light", "string", Null),
 			Field("obstacle", "string", Null),
+			Field("traffic_sign", "traffic_sign", Null),
 			Field("location", "point"),
 			Field("detected_at", "time"),
 		)),
@@ -76,9 +86,10 @@ func main() {
 			Field("is_deleted", "bool"),
 			Field("deleted_at", "time", Null),
 		),
-
-		Model("all_detection",
-			Field("ride_id", "ride_id", PrimaryKey, ForeignKey("ride")),
+		Type("ride_detection_id", bunnyid.ID{Prefix: "rd"}),
+		Model("ride_detection",
+			Field("id", "ride_detection_id", PrimaryKey),
+			Field("ride_id", "ride_id", ForeignKey("ride")),
 			Field("user_id", "user_id", ForeignKey("user")),
 			Field("detection", "detection"),
 		),

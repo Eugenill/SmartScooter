@@ -1,5 +1,6 @@
 package main
 
+//USAGE:  go run ./cmd/migrate/main.go
 import (
 	"context"
 	"database/sql"
