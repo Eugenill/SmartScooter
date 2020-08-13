@@ -2,14 +2,11 @@ package log
 
 import (
 	"context"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"log"
-	"math/rand"
-	"net/http"
 )
 
 type key int
-
-const requestIDKey = key(50)
 
 //function to put the msg to the key in the context
 func Println(ctx context.Context, key key, msg string) {
@@ -24,11 +21,6 @@ func Println(ctx context.Context, key key, msg string) {
 	log.Printf("[%d] %s", id, msg)
 }
 
-func AddReqID(f http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-		id := rand.Int63()
-		ctx = context.WithValue(ctx, requestIDKey, id)
-		f(w, r.WithContext(ctx))
-	}
+func Request(ctx context.Context) {
+	log.Println(ctx, rest.RequestIDKey, "")
 }

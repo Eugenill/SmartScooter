@@ -32,6 +32,6 @@ func PublishDetection(mqttConf mqtt_sub.MQTTConfig, topic string) http.HandlerFu
 		client := mqtt_sub.ConnectToBroker("RaspberryPi", mqttConf)
 		client.Publish(mqttConf.Pretopic+topic, 0, false, detection)
 		_, err := w.Write([]byte(detection))
-		errors.Catch(err)
+		errors.PanicError(err)
 	}
 }

@@ -15,7 +15,7 @@ const (
 	MQTTPort     = ":1883"
 	MQTTPassw    = "asdf1234"
 	MQTTPreTopic = "eugeni.llagostera@gmail.com/"
-	MQTTCLientID = "SmartScooter server"
+	MQTTCLientID = "SmartScooter"
 )
 
 type MQTTConfig struct {
@@ -52,11 +52,11 @@ func ListenToTopics(mqttConf MQTTConfig, topics []string, client mqtt.Client) {
 	for _, topic := range topics {
 		switch topic {
 		case "timer":
-			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogDetection)
+			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogMessage)
 		case "RP1_detection":
 			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.SaveDetection)
 		case "detection_example":
-			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogDetection)
+			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogMessage)
 		}
 	}
 	log.Printf("Topics added correctly")

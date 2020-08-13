@@ -1,6 +1,6 @@
 package errors
 
-func Catch(err error) {
+func PanicError(err error) {
 	if err != nil {
 		panic(err)
 	}

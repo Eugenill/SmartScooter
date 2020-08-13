@@ -6,10 +6,10 @@ import (
 )
 
 func SaveDetection(client mqtt.Client, msg mqtt.Message) {
-	log.Println("Detection arrived")
-	log.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))
+	log.Printf("Detection arrived in topic: %s", msg.Topic())
+	LogMessage(client, msg)
 
 }
-func LogDetection(client mqtt.Client, msg mqtt.Message) {
+func LogMessage(client mqtt.Client, msg mqtt.Message) {
 	log.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))
 }
