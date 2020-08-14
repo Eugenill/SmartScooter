@@ -18,7 +18,7 @@ type User struct {
 	ID           UserID         `bunny:"id" json:"id" `
 	Login        string         `bunny:"login" json:"login" `
 	SecretHash   string         `bunny:"secret_hash" json:"secret_hash" `
-	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
+	ContactEmail string         `json:"contact_email" bunny:"contact_email" `
 	IsDeleted    bool           `json:"is_deleted" bunny:"is_deleted" `
 	DeletedAt    _import00.Time `bunny:"deleted_at" json:"deleted_at" `
 	R            *userR         `json:"-" toml:"-" yaml:"-"`
@@ -42,10 +42,10 @@ var UserColumns = struct {
 }
 
 type userR struct {
+	Rides           RideSlice
 	CurrentVehicles VehicleSlice
 	LastVehicles    VehicleSlice
 	RideDetections  RideDetectionSlice
-	Rides           RideSlice
 }
 
 type userL struct{}
@@ -135,6 +135,65 @@ func (q userQuery) Exists(ctx context.Context) (bool, error) {
 	}
 
 	return count > 0, nil
+}
+
+func (o *User) Rides(mods ...qm.QueryMod) rideQuery {
+	queryMods := []qm.QueryMod{
+
+		qm.Where("\"user_id\"=?", o.ID),
+	}
+
+	queryMods = append(queryMods, mods...)
+	query := Rides(queryMods...)
+	queries.SetFrom(query.Query, "\"ride\"")
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"\"ride\".*"})
+	}
+
+	return query
+}
+
+func (userL) LoadRides(ctx context.Context, slice []*User) error {
+	args := make([]interface{}, len(slice)*1)
+	for i, obj := range slice {
+		if obj.R == nil {
+			obj.R = &userR{}
+		}
+
+		args[i*1+0] = obj.ID
+
+	}
+
+	where := fmt.Sprintf(
+		"\"f\".\"user_id\" in (%s)",
+		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
+	)
+	query := NewQuery(
+		qm.Select("f.*"),
+		qm.From("\"ride\" AS f"),
+		qm.Where(where, args...),
+	)
+
+	var resultSlice []*Ride
+	if err := query.Bind(ctx, &resultSlice); err != nil {
+		return errors.Errorf("failed to bind eager loaded slice Ride: %w", err)
+	}
+
+	if len(resultSlice) == 0 {
+		return nil
+	}
+
+	for _, local := range slice {
+		for _, foreign := range resultSlice {
+			if local.ID == foreign.UserID {
+
+				local.R.Rides = append(local.R.Rides, foreign)
+
+			}
+		}
+	}
+
+	return nil
 }
 
 func (o *User) CurrentVehicles(mods ...qm.QueryMod) vehicleQuery {
@@ -306,65 +365,6 @@ func (userL) LoadRideDetections(ctx context.Context, slice []*User) error {
 			if local.ID == foreign.UserID {
 
 				local.R.RideDetections = append(local.R.RideDetections, foreign)
-
-			}
-		}
-	}
-
-	return nil
-}
-
-func (o *User) Rides(mods ...qm.QueryMod) rideQuery {
-	queryMods := []qm.QueryMod{
-
-		qm.Where("\"user_id\"=?", o.ID),
-	}
-
-	queryMods = append(queryMods, mods...)
-	query := Rides(queryMods...)
-	queries.SetFrom(query.Query, "\"ride\"")
-	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"ride\".*"})
-	}
-
-	return query
-}
-
-func (userL) LoadRides(ctx context.Context, slice []*User) error {
-	args := make([]interface{}, len(slice)*1)
-	for i, obj := range slice {
-		if obj.R == nil {
-			obj.R = &userR{}
-		}
-
-		args[i*1+0] = obj.ID
-
-	}
-
-	where := fmt.Sprintf(
-		"\"f\".\"user_id\" in (%s)",
-		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
-	)
-	query := NewQuery(
-		qm.Select("f.*"),
-		qm.From("\"ride\" AS f"),
-		qm.Where(where, args...),
-	)
-
-	var resultSlice []*Ride
-	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice Ride: %w", err)
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.ID == foreign.UserID {
-
-				local.R.Rides = append(local.R.Rides, foreign)
 
 			}
 		}

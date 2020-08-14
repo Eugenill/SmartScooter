@@ -13,7 +13,7 @@ import (
 )
 
 type Detection struct {
-	TrafficLight  _import00.String `bunny:"traffic_light" json:"traffic_light" `
+	TrafficLight  _import00.String `json:"traffic_light" bunny:"traffic_light" `
 	Obstacle      _import00.String `bunny:"obstacle" json:"obstacle" `
 	TrafficSign   NullTrafficSign  `bunny:"traffic_sign" json:"traffic_sign" `
 	Location      Point            `bunny:"location__,bind" json:"location" `

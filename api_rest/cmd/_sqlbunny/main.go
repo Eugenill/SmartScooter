@@ -78,7 +78,6 @@ func main() {
 			Field("helmet_id", "helmet_id", ForeignKey("helmet"), Index),
 		),
 
-		//TODO: afegir vehicle_id
 		Type("ride_id", bunnyid.ID{Prefix: "r"}),
 		Model("ride",
 			Field("id", "ride_id", PrimaryKey),
@@ -94,9 +93,9 @@ func main() {
 		Type("user_id", bunnyid.ID{Prefix: "usr"}),
 		Model("user",
 			Field("id", "user_id", PrimaryKey),
-			Field("login", "string", Unique),
+			Field("login", "string", Unique, Index),
 			Field("secret_hash", "string"),
-			Field("contact_email", "string"),
+			Field("contact_email", "string", Index),
 			Field("is_deleted", "bool"),
 			Field("deleted_at", "time", Null),
 		),
