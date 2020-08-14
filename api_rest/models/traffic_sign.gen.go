@@ -12,17 +12,19 @@ import (
 type TrafficSign int32
 
 var TrafficSigns = struct {
-	Stop  TrafficSign
-	Yield TrafficSign
-	Vel10 TrafficSign
-	Vel20 TrafficSign
-	Vel30 TrafficSign
+	Stop   TrafficSign
+	Yield  TrafficSign
+	Vel10  TrafficSign
+	Vel20  TrafficSign
+	Vel30  TrafficSign
+	People TrafficSign
 }{
-	Stop:  TrafficSign(0),
-	Yield: TrafficSign(1),
-	Vel10: TrafficSign(2),
-	Vel20: TrafficSign(3),
-	Vel30: TrafficSign(4),
+	Stop:   TrafficSign(0),
+	Yield:  TrafficSign(1),
+	Vel10:  TrafficSign(2),
+	Vel20:  TrafficSign(3),
+	Vel30:  TrafficSign(4),
+	People: TrafficSign(5),
 }
 
 const ()
@@ -33,6 +35,7 @@ var trafficSignValues = map[string]TrafficSign{
 	"vel_10": TrafficSign(2),
 	"vel_20": TrafficSign(3),
 	"vel_30": TrafficSign(4),
+	"people": TrafficSign(5),
 }
 
 var trafficSignNames = map[TrafficSign]string{
@@ -41,6 +44,7 @@ var trafficSignNames = map[TrafficSign]string{
 	TrafficSign(2): "vel_10",
 	TrafficSign(3): "vel_20",
 	TrafficSign(4): "vel_30",
+	TrafficSign(5): "people",
 }
 
 func (o TrafficSign) String() string {

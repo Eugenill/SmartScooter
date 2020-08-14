@@ -17,7 +17,7 @@ type RideDetection struct {
 	ID        RideDetectionID `bunny:"id" json:"id" `
 	RideID    RideID          `bunny:"ride_id" json:"ride_id" `
 	UserID    UserID          `bunny:"user_id" json:"user_id" `
-	Detection Detection       `bunny:"detection__,bind" json:"detection" `
+	Detection Detection       `json:"detection" bunny:"detection__,bind" `
 	R         *rideDetectionR `json:"-" toml:"-" yaml:"-"`
 	L         rideDetectionL  `json:"-" toml:"-" yaml:"-"`
 }
@@ -33,6 +33,7 @@ var RideDetectionColumns = struct {
 	DetectionLocationLongitude string
 	DetectionLocationAccuracy  string
 	DetectionDetectedAt        string
+	DetectionDetectionZone     string
 }{
 	ID:                         "id",
 	RideID:                     "ride_id",
@@ -44,6 +45,7 @@ var RideDetectionColumns = struct {
 	DetectionLocationLongitude: "detection__location__longitude",
 	DetectionLocationAccuracy:  "detection__location__accuracy",
 	DetectionDetectedAt:        "detection__detected_at",
+	DetectionDetectionZone:     "detection__detection_zone",
 }
 
 type rideDetectionR struct {
@@ -54,9 +56,9 @@ type rideDetectionR struct {
 type rideDetectionL struct{}
 
 var (
-	rideDetectionColumns              = []string{"id", "ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at"}
+	rideDetectionColumns              = []string{"id", "ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at", "detection__detection_zone"}
 	rideDetectionPrimaryKeyColumns    = []string{"id"}
-	rideDetectionNonPrimaryKeyColumns = []string{"ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at"}
+	rideDetectionNonPrimaryKeyColumns = []string{"ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at", "detection__detection_zone"}
 )
 
 type (

@@ -9,7 +9,7 @@ import (
 
 type Point struct {
 	Latitude  float64 `bunny:"latitude" json:"latitude" `
-	Longitude float64 `bunny:"longitude" json:"longitude" `
+	Longitude float64 `json:"longitude" bunny:"longitude" `
 	Accuracy  float64 `bunny:"accuracy" json:"accuracy" `
 }
 type NullPoint struct {

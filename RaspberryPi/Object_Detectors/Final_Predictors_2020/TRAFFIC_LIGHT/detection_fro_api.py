@@ -149,9 +149,10 @@ while True:
 				relevant_detection=l
 	state = relevant_detection[1]
 
-	crop_img = frame[startY:endY, startX:endX]
-	if len(crop_img) != 0:
-		cv2.imwrite("crop_img.jpg", crop_img)	
+	#crop_img = frame[startY:endY, startX:endX]
+	#if len(crop_img) != 0:
+	#	cv2.imwrite("crop_img.jpg", crop_img)	
+
 	# draw the prediction on the frame
 	#label = "{}: {:.2f}%".format(CLASSES[relevant_detection[1]] ,relevant_detection[0] * 100)
 	cv2.rectangle(frame, (relevant_detection[2], relevant_detection[3]), (relevant_detection[4], relevant_detection[5]), COLORS[idx], 2)

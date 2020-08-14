@@ -8,6 +8,7 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/hash"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"github.com/sqlbunny/sqlbunny/runtime/bunny"
+	"github.com/sqlbunny/sqlbunny/runtime/qm"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
 	"log"
 	"net/http"
@@ -29,13 +30,18 @@ type userCreate struct {
 
 func CreateUser() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var err error
 		ctx := bunny.ContextWithDB(r.Context(), db.DB)
 		var usr userCreate
-		err = bunny.Atomic(ctx, func(ctx context.Context) error {
-			log.Print("here")
+		err := bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&usr, r); err != nil {
 				return err
+			}
+			_, err := models.Users(
+				qm.Where("login = ?"),
+			).One(ctx)
+			if bunny.IsErrNoRows(err) {
+				_, errW := w.Write([]byte("This user already exists"))
+				return errW
 			}
 			secretHash, err := hash.HashPassword(usr.Secret)
 			if err != nil {

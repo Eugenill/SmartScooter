@@ -26,9 +26,9 @@ func main() {
 	//1. Create General Context
 	ctx, cancelContext := context.WithCancel(context.Background())
 	defer cancelContext()
+
 	//2. Open DB?
-	db.OpenDB(db.DB)
-	log.Printf("Connected to the PostgreSQL, Host: localhost, Port: 5432, dbname: smartscooter, user: postgres, password: postgres")
+	db.DB = db.OpenDB()
 	ctx = bunny.ContextWithDB(ctx, db.DB)
 
 	//3. Initialize MQTT
@@ -39,8 +39,8 @@ func main() {
 	//mqtt_client.PublishTimer("timer", mqttConfig)
 
 	//4. Init router
-	errL := http.ListenAndServe("localhost:1234", router.SetRouter(mqttConfig, ctx))
-	errors.PanicError(errL)
+	err := http.ListenAndServe("localhost:1234", router.SetRouter(mqttConfig, ctx))
+	errors.PanicError(err)
 
 	// Waiting for an OS signal cancellation
 	quit := make(chan os.Signal, 1)

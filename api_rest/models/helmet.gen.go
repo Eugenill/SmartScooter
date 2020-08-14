@@ -18,7 +18,7 @@ type Helmet struct {
 	ID           HelmetID     `bunny:"id" json:"id" `
 	VehicleZone  VehicleZone  `bunny:"vehicle_zone" json:"vehicle_zone" `
 	LastPing     time.Time    `bunny:"last_ping" json:"last_ping" `
-	HelmetStatus HelmetStatus `json:"helmet_status" bunny:"helmet_status" `
+	HelmetStatus HelmetStatus `bunny:"helmet_status" json:"helmet_status" `
 	R            *helmetR     `json:"-" toml:"-" yaml:"-"`
 	L            helmetL      `json:"-" toml:"-" yaml:"-"`
 }
