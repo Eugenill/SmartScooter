@@ -6,6 +6,7 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"github.com/go-chi/chi"
+	"log"
 )
 
 var router *chi.Mux
@@ -14,6 +15,6 @@ func SetRouter(mqttConf mqtt_sub.MQTTConfig, ctx context.Context) *chi.Mux {
 	router = chi.NewMux()
 	rest.AddMiddlewares(router)
 	endpoints.AddEndpoints(router, mqttConf)
-
+	log.Println("Server running")
 	return router
 }
