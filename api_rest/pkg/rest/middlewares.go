@@ -4,9 +4,13 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/Eugenill/SmartScooter/api_rest/models"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/hash"
 	"github.com/go-chi/chi"
 	"github.com/sqlbunny/sqlbunny/runtime/bunny"
+	"github.com/sqlbunny/sqlbunny/runtime/qm"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -24,6 +28,8 @@ var reqid uint64
 
 func AddMiddlewares(router *chi.Mux) {
 	router.Use(RequestID)
+	router.Use(CtxWithDB)
+	router.Use(Auth)
 }
 
 // RequestID is a middleware that injects a request ID into the context of each
@@ -33,7 +39,7 @@ func AddMiddlewares(router *chi.Mux) {
 // counter.
 func RequestID(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		ctx := bunny.ContextWithDB(r.Context(), db.DB)
+		ctx := r.Context()
 		requestID := r.Header.Get("X-Request-Id")
 		if requestID == "" {
 			myid := atomic.AddUint64(&reqid, 1)
@@ -58,4 +64,48 @@ func prefixGen() string {
 		b64 = strings.NewReplacer("+", "", "/", "").Replace(b64)
 	}
 	return fmt.Sprintf("%s/%s", hostname, b64[0:10])
+}
+
+func CtxWithDB(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := bunny.ContextWithDB(r.Context(), db.DB)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	}
+	return http.HandlerFunc(fn)
+}
+
+type userLogin struct {
+	Login  string `json:"username" `
+	Secret string `json:"secret" `
+}
+
+func Auth(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		usr := userLogin{}
+		if err := UnmarshalJSONRequest(&usr, r); err == nil {
+			user, err := models.Users(
+				qm.Where("login = ?", usr.Login),
+			).One(ctx)
+			if err == nil {
+				if hash.CheckPasswordHash(usr.Secret, user.SecretHash) {
+					_, err = w.Write([]byte("Correct User and password"))
+					next.ServeHTTP(w, r.WithContext(ctx))
+				} else {
+					_, err = w.Write([]byte("Incorrect password"))
+					next.ServeHTTP(w, r.WithContext(ctx))
+					log.Fatal(err)
+				}
+			} else {
+				_, err = w.Write([]byte("This user doesn't exist"))
+				next.ServeHTTP(w, r.WithContext(ctx))
+				log.Fatal(err)
+			}
+		} else {
+			_, err = w.Write([]byte("Incorrect syntax"))
+			next.ServeHTTP(w, r.WithContext(ctx))
+			log.Fatal(err)
+		}
+	}
+	return http.HandlerFunc(fn)
 }
