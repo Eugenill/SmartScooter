@@ -6,9 +6,9 @@ import (
 )
 
 func PublishTimer(topic string, mqttConf mqtt_sub.MQTTConfig) {
-	client := mqtt_sub.ConnectToBroker("RaspberryPi", mqttConf)
+	client := mqtt_sub.ConnectToBroker("Timer", mqttConf)
 	timer := time.NewTicker(1 * time.Second)
 	for t := range timer.C {
-		client.Publish(mqttConf.Pretopic+topic, 0, false, t.String())
+		client.Publish(mqttConf.PreTopic+topic, 0, false, t.String())
 	}
 }

@@ -3,11 +3,10 @@ package mqtt_client
 import (
 	"fmt"
 	"github.com/Eugenill/SmartScooter/api_rest/models"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
+	"github.com/gin-gonic/gin"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
-	"log"
-	"net/http"
 	"time"
 )
 
@@ -25,13 +24,11 @@ func newDetection() string {
 }
 
 //handle the req (ping of rasp) and publishes a detection
-func PublishDetection(mqttConf mqtt_sub.MQTTConfig, topic string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
+func PublishDetection(mqttConf mqtt_sub.MQTTConfig, topic string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		detection := newDetection()
 		client := mqtt_sub.ConnectToBroker("RaspberryPi", mqttConf)
-		client.Publish(mqttConf.Pretopic+topic, 0, false, detection)
-		_, err := w.Write([]byte(detection))
-		errors.PanicError(err)
+		client.Publish(mqttConf.PreTopic+topic, 0, false, detection)
+		writters.JsonResponse(ctx, detection, 200)
 	}
 }

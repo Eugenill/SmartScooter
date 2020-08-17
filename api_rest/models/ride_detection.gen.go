@@ -16,7 +16,7 @@ import (
 type RideDetection struct {
 	ID        RideDetectionID `bunny:"id" json:"id" `
 	RideID    RideID          `bunny:"ride_id" json:"ride_id" `
-	UserID    UserID          `json:"user_id" bunny:"user_id" `
+	UserID    UserID          `bunny:"user_id" json:"user_id" `
 	Detection Detection       `bunny:"detection__,bind" json:"detection" `
 	R         *rideDetectionR `json:"-" toml:"-" yaml:"-"`
 	L         rideDetectionL  `json:"-" toml:"-" yaml:"-"`

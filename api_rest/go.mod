@@ -11,6 +11,7 @@ require (
 	github.com/sqlbunny/sqlbunny v0.0.0-20191022114851-4eeed22acab6
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
+	golang.org/x/tools v0.0.0-20190802220118-1d1727260058
 
 )
 

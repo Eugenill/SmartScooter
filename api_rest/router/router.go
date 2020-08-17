@@ -1,20 +1,16 @@
 package router
 
 import (
-	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/endpoints"
+	"github.com/Eugenill/SmartScooter/api_rest/middleware"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
-	"github.com/go-chi/chi"
-	"log"
+	"github.com/gin-gonic/gin"
 )
 
-var router *chi.Mux
-
-func SetRouter(mqttConf mqtt_sub.MQTTConfig, ctx context.Context) *chi.Mux {
-	router = chi.NewMux()
-	rest.AddMiddlewares(router)
-	endpoints.AddEndpoints(router, mqttConf)
-	log.Println("Server running")
-	return router
+func SetServer(mqttConf mqtt_sub.MQTTConfig) *gin.Engine {
+	engine := gin.New()
+	engine.Use(middleware.Logger(), gin.Recovery())
+	middleware.AddMiddlewares(engine)
+	endpoints.AddEndpoints(engine, mqttConf)
+	return engine
 }

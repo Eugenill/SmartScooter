@@ -22,7 +22,7 @@ type MQTTConfig struct {
 	Host     string
 	Port     string
 	User     *url.Userinfo
-	Pretopic string
+	PreTopic string
 	ClientID string
 }
 
@@ -52,11 +52,11 @@ func ListenToTopics(mqttConf MQTTConfig, topics []string, client mqtt.Client) {
 	for _, topic := range topics {
 		switch topic {
 		case "timer":
-			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogMessage)
+			go client.Subscribe(mqttConf.PreTopic+topic, 0, handlers.LogMessage)
 		case "RP1_detection":
-			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.SaveDetection)
+			go client.Subscribe(mqttConf.PreTopic+topic, 0, handlers.SaveDetection)
 		case "detection_example":
-			go client.Subscribe(mqttConf.Pretopic+topic, 0, handlers.LogMessage)
+			go client.Subscribe(mqttConf.PreTopic+topic, 0, handlers.LogMessage)
 		}
 	}
 	log.Printf("Topics added correctly")

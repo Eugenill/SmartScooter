@@ -3,46 +3,44 @@ package handlers
 import (
 	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/models"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/hash"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
+	"github.com/gin-gonic/gin"
 	"github.com/sqlbunny/sqlbunny/runtime/bunny"
 	"github.com/sqlbunny/sqlbunny/runtime/qm"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
-	"log"
-	"net/http"
 )
 
-func GetVehicles(name string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
-		_, err := w.Write([]byte(name))
-		errors.PanicError(err)
+func GetVehicles(name string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		writters.JsonResponse(ctx, name, 200)
 	}
 }
 
 type userCreate struct {
-	Login        string `json:"username" `
+	Username     string `json:"username" `
 	Secret       string `json:"secret" `
 	ContactEmail string `json:"email" `
+	Admin        bool   `json:"admin" `
 }
 
-func CreateUser() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
+func CreateUser() gin.HandlerFunc {
+	return func(ctxGin *gin.Context) {
+		r := ctxGin.Request
 		var usr userCreate
+		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&usr, r); err != nil {
 				return err
 			}
 			existUser, err := models.Users(
-				qm.Where("login = ?", usr.Login),
+				qm.Where("username = ?", usr.Username),
 			).One(ctx)
 			if existUser != nil {
-				_, errW := w.Write([]byte("This user already exists"))
-				if errW != nil {
-					return errW
-				}
+				errors.ErrJsonResponse(ctxGin, errors.New("This User already exists"), 200)
 				return nil
 			} else if bunny.IsErrNoRows(err) {
 				secretHash, err := hash.HashPassword(usr.Secret)
@@ -51,23 +49,24 @@ func CreateUser() http.HandlerFunc {
 				}
 				o := models.User{
 					ID:           models.NewUserID(),
-					Login:        usr.Login,
+					Username:     usr.Username,
 					SecretHash:   secretHash,
 					ContactEmail: usr.ContactEmail,
+					Admin:        usr.Admin,
 					IsDeleted:    false,
 					DeletedAt:    _import00.Time{},
 				}
 				if err = o.Insert(ctx); err != nil {
 					return err
 				}
-				_, err = w.Write([]byte("User created successfully"))
+				writters.JsonResponse(ctxGin, "User created successfully", 200)
 				return nil
 			} else {
 				return err
 			}
 		})
 		if err != nil {
-			log.Fatal(err)
+			errors.ErrJsonResponse(ctxGin, err, 400)
 		}
 	}
 }

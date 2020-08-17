@@ -6,30 +6,24 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
 	"github.com/Eugenill/SmartScooter/api_rest/router"
-	"github.com/sqlbunny/sqlbunny/runtime/bunny"
 	"log"
-	"net/http"
 	"net/url"
-	"os"
-	"os/signal"
 )
 
 var mqttConfig = mqtt_sub.MQTTConfig{
 	Host:     mqtt_sub.MQTTHost,
 	Port:     mqtt_sub.MQTTPort,
 	User:     url.UserPassword(mqtt_sub.MQTTUsername, mqtt_sub.MQTTPassw),
-	Pretopic: mqtt_sub.MQTTPreTopic,
+	PreTopic: mqtt_sub.MQTTPreTopic,
 	ClientID: mqtt_sub.MQTTCLientID,
 }
 
 func main() {
 	//1. Create General Context
-	ctx, cancelContext := context.WithCancel(context.Background())
-	defer cancelContext()
-
+	_, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	//2. Open DB?
 	db.DB = db.OpenDB()
-	ctx = bunny.ContextWithDB(ctx, db.DB)
 
 	//3. Initialize MQTT
 	client := mqtt_sub.ConnectToBroker(mqttConfig.ClientID, mqttConfig)
@@ -38,17 +32,11 @@ func main() {
 	mqtt_sub.ListenToTopics(mqttConfig, topics, client)
 	//mqtt_client.PublishTimer("timer", mqttConfig)
 
-	//4. Init router
-	err := http.ListenAndServe("localhost:1234", router.SetRouter(mqttConfig, ctx))
+	//4. Init server
+	engine := router.SetServer(mqttConfig)
+	err := engine.Run("localhost:1234")
 	errors.PanicError(err)
-
-	// Waiting for an OS signal cancellation
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	//log
 
 	// Shutdown the servers
 
-	//log
 }
