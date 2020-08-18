@@ -15,7 +15,7 @@ import (
 )
 
 type Helmet struct {
-	ID           HelmetID     `json:"id" bunny:"id" `
+	ID           HelmetID     `bunny:"id" json:"id" `
 	VehicleZone  VehicleZone  `bunny:"vehicle_zone" json:"vehicle_zone" `
 	LastPing     time.Time    `bunny:"last_ping" json:"last_ping" `
 	HelmetStatus HelmetStatus `bunny:"helmet_status" json:"helmet_status" `

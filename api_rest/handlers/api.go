@@ -5,7 +5,6 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/models"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/hash"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
 	"github.com/gin-gonic/gin"
@@ -38,19 +37,19 @@ func CreateUser() gin.HandlerFunc {
 			}
 			existUser, err := models.Users(
 				qm.Where("username = ?", usr.Username),
-			).One(ctx)
-			if existUser != nil {
+			).Exists(ctx)
+			if existUser {
 				errors.ErrJsonResponse(ctxGin, errors.New("This User already exists"), 200)
 				return nil
-			} else if bunny.IsErrNoRows(err) {
-				secretHash, err := hash.HashPassword(usr.Secret)
+			}
+			if !existUser {
 				if err != nil {
 					return err
 				}
 				o := models.User{
 					ID:           models.NewUserID(),
 					Username:     usr.Username,
-					SecretHash:   secretHash,
+					Secret:       usr.Secret,
 					ContactEmail: usr.ContactEmail,
 					Admin:        usr.Admin,
 					IsDeleted:    false,

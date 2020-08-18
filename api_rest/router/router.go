@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetServer(mqttConf mqtt_sub.MQTTConfig) *gin.Engine {
+func SetServer(mqttConf mqtt_sub.MQTTConfig, ctx *gin.Context) *gin.Engine {
 	engine := gin.New()
 	engine.Use(middleware.Logger(), gin.Recovery())
-	middleware.AddMiddlewares(engine)
+	middleware.AddMiddlewares(engine, ctx)
 	endpoints.AddEndpoints(engine, mqttConf)
 	return engine
 }

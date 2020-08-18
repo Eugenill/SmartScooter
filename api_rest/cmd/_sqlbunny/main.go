@@ -94,7 +94,7 @@ func main() {
 		Model("user",
 			Field("id", "user_id", PrimaryKey),
 			Field("username", "string", Unique, Index),
-			Field("secret_hash", "string"),
+			Field("secret", "string"),
 			Field("contact_email", "string", Index),
 			Field("admin", "bool"),
 			Field("is_deleted", "bool"),

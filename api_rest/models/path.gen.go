@@ -16,7 +16,7 @@ import (
 type Path struct {
 	ID     PathID `bunny:"id" json:"id" `
 	RideID RideID `bunny:"ride_id" json:"ride_id" `
-	Point  Point  `bunny:"point__,bind" json:"point" `
+	Point  Point  `json:"point" bunny:"point__,bind" `
 	R      *pathR `json:"-" toml:"-" yaml:"-"`
 	L      pathL  `json:"-" toml:"-" yaml:"-"`
 }

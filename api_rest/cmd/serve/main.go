@@ -1,11 +1,11 @@
 package main
 
 import (
-	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
 	"github.com/Eugenill/SmartScooter/api_rest/router"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/url"
 )
@@ -20,8 +20,7 @@ var mqttConfig = mqtt_sub.MQTTConfig{
 
 func main() {
 	//1. Create General Context
-	_, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := &gin.Context{}
 	//2. Open DB?
 	db.DB = db.OpenDB()
 
@@ -33,7 +32,7 @@ func main() {
 	//mqtt_client.PublishTimer("timer", mqttConfig)
 
 	//4. Init server
-	engine := router.SetServer(mqttConfig)
+	engine := router.SetServer(mqttConfig, ctx)
 	err := engine.Run("localhost:1234")
 	errors.PanicError(err)
 

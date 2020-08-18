@@ -18,11 +18,11 @@ import (
 type Ride struct {
 	ID         RideID         `bunny:"id" json:"id" `
 	VehicleID  VehicleID      `bunny:"vehicle_id" json:"vehicle_id" `
-	UserID     UserID         `bunny:"user_id" json:"user_id" `
+	UserID     UserID         `json:"user_id" bunny:"user_id" `
 	PathID     PathID         `bunny:"path_id" json:"path_id" `
-	Distance   float32        `json:"distance" bunny:"distance" `
-	Duration   int32          `bunny:"duration" json:"duration" `
-	StartedAt  time.Time      `bunny:"started_at" json:"started_at" `
+	Distance   float32        `bunny:"distance" json:"distance" `
+	Duration   int32          `json:"duration" bunny:"duration" `
+	StartedAt  time.Time      `json:"started_at" bunny:"started_at" `
 	FinishedAt _import00.Time `bunny:"finished_at" json:"finished_at" `
 	R          *rideR         `json:"-" toml:"-" yaml:"-"`
 	L          rideL          `json:"-" toml:"-" yaml:"-"`
@@ -49,13 +49,13 @@ var RideColumns = struct {
 }
 
 type rideR struct {
-	CurrentVehicles VehicleSlice
-	LastVehicles    VehicleSlice
 	Detections      RideDetectionSlice
 	Paths           PathSlice
 	Vehicle         *Vehicle
 	User            *User
 	Path            *Path
+	CurrentVehicles VehicleSlice
+	LastVehicles    VehicleSlice
 }
 
 type rideL struct{}
@@ -145,124 +145,6 @@ func (q rideQuery) Exists(ctx context.Context) (bool, error) {
 	}
 
 	return count > 0, nil
-}
-
-func (o *Ride) CurrentVehicles(mods ...qm.QueryMod) vehicleQuery {
-	queryMods := []qm.QueryMod{
-
-		qm.Where("\"current_ride_id\"=?", o.ID),
-	}
-
-	queryMods = append(queryMods, mods...)
-	query := Vehicles(queryMods...)
-	queries.SetFrom(query.Query, "\"vehicle\"")
-	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"vehicle\".*"})
-	}
-
-	return query
-}
-
-func (rideL) LoadCurrentVehicles(ctx context.Context, slice []*Ride) error {
-	args := make([]interface{}, len(slice)*1)
-	for i, obj := range slice {
-		if obj.R == nil {
-			obj.R = &rideR{}
-		}
-
-		args[i*1+0] = obj.ID
-
-	}
-
-	where := fmt.Sprintf(
-		"\"f\".\"current_ride_id\" in (%s)",
-		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
-	)
-	query := NewQuery(
-		qm.Select("f.*"),
-		qm.From("\"vehicle\" AS f"),
-		qm.Where(where, args...),
-	)
-
-	var resultSlice []*Vehicle
-	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice Vehicle: %w", err)
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.ID == foreign.CurrentRideID {
-
-				local.R.CurrentVehicles = append(local.R.CurrentVehicles, foreign)
-
-			}
-		}
-	}
-
-	return nil
-}
-
-func (o *Ride) LastVehicles(mods ...qm.QueryMod) vehicleQuery {
-	queryMods := []qm.QueryMod{
-
-		qm.Where("\"last_ride_id\"=?", o.ID),
-	}
-
-	queryMods = append(queryMods, mods...)
-	query := Vehicles(queryMods...)
-	queries.SetFrom(query.Query, "\"vehicle\"")
-	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"vehicle\".*"})
-	}
-
-	return query
-}
-
-func (rideL) LoadLastVehicles(ctx context.Context, slice []*Ride) error {
-	args := make([]interface{}, len(slice)*1)
-	for i, obj := range slice {
-		if obj.R == nil {
-			obj.R = &rideR{}
-		}
-
-		args[i*1+0] = obj.ID
-
-	}
-
-	where := fmt.Sprintf(
-		"\"f\".\"last_ride_id\" in (%s)",
-		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
-	)
-	query := NewQuery(
-		qm.Select("f.*"),
-		qm.From("\"vehicle\" AS f"),
-		qm.Where(where, args...),
-	)
-
-	var resultSlice []*Vehicle
-	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice Vehicle: %w", err)
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.ID == foreign.LastRideID {
-
-				local.R.LastVehicles = append(local.R.LastVehicles, foreign)
-
-			}
-		}
-	}
-
-	return nil
 }
 
 func (o *Ride) Detections(mods ...qm.QueryMod) rideDetectionQuery {
@@ -555,6 +437,124 @@ func (rideL) LoadPath(ctx context.Context, slice []*Ride) error {
 
 				local.R.Path = foreign
 				break
+
+			}
+		}
+	}
+
+	return nil
+}
+
+func (o *Ride) CurrentVehicles(mods ...qm.QueryMod) vehicleQuery {
+	queryMods := []qm.QueryMod{
+
+		qm.Where("\"current_ride_id\"=?", o.ID),
+	}
+
+	queryMods = append(queryMods, mods...)
+	query := Vehicles(queryMods...)
+	queries.SetFrom(query.Query, "\"vehicle\"")
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"\"vehicle\".*"})
+	}
+
+	return query
+}
+
+func (rideL) LoadCurrentVehicles(ctx context.Context, slice []*Ride) error {
+	args := make([]interface{}, len(slice)*1)
+	for i, obj := range slice {
+		if obj.R == nil {
+			obj.R = &rideR{}
+		}
+
+		args[i*1+0] = obj.ID
+
+	}
+
+	where := fmt.Sprintf(
+		"\"f\".\"current_ride_id\" in (%s)",
+		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
+	)
+	query := NewQuery(
+		qm.Select("f.*"),
+		qm.From("\"vehicle\" AS f"),
+		qm.Where(where, args...),
+	)
+
+	var resultSlice []*Vehicle
+	if err := query.Bind(ctx, &resultSlice); err != nil {
+		return errors.Errorf("failed to bind eager loaded slice Vehicle: %w", err)
+	}
+
+	if len(resultSlice) == 0 {
+		return nil
+	}
+
+	for _, local := range slice {
+		for _, foreign := range resultSlice {
+			if local.ID == foreign.CurrentRideID {
+
+				local.R.CurrentVehicles = append(local.R.CurrentVehicles, foreign)
+
+			}
+		}
+	}
+
+	return nil
+}
+
+func (o *Ride) LastVehicles(mods ...qm.QueryMod) vehicleQuery {
+	queryMods := []qm.QueryMod{
+
+		qm.Where("\"last_ride_id\"=?", o.ID),
+	}
+
+	queryMods = append(queryMods, mods...)
+	query := Vehicles(queryMods...)
+	queries.SetFrom(query.Query, "\"vehicle\"")
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"\"vehicle\".*"})
+	}
+
+	return query
+}
+
+func (rideL) LoadLastVehicles(ctx context.Context, slice []*Ride) error {
+	args := make([]interface{}, len(slice)*1)
+	for i, obj := range slice {
+		if obj.R == nil {
+			obj.R = &rideR{}
+		}
+
+		args[i*1+0] = obj.ID
+
+	}
+
+	where := fmt.Sprintf(
+		"\"f\".\"last_ride_id\" in (%s)",
+		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
+	)
+	query := NewQuery(
+		qm.Select("f.*"),
+		qm.From("\"vehicle\" AS f"),
+		qm.Where(where, args...),
+	)
+
+	var resultSlice []*Vehicle
+	if err := query.Bind(ctx, &resultSlice); err != nil {
+		return errors.Errorf("failed to bind eager loaded slice Vehicle: %w", err)
+	}
+
+	if len(resultSlice) == 0 {
+		return nil
+	}
+
+	for _, local := range slice {
+		for _, foreign := range resultSlice {
+			if local.ID == foreign.LastRideID {
+
+				local.R.LastVehicles = append(local.R.LastVehicles, foreign)
 
 			}
 		}

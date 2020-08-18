@@ -6,7 +6,6 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/models"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/hash"
 	"github.com/gin-gonic/gin"
 	"github.com/sqlbunny/sqlbunny/runtime/qm"
 	"math/rand"
@@ -21,9 +20,9 @@ const RequestIDKey int = 0
 
 var reqid uint64
 
-func AddMiddlewares(engine *gin.Engine) {
-	//router.Use(RequestID())
-	engine.Use(Auth())
+func AddMiddlewares(engine *gin.Engine, ctx *gin.Context) {
+	//engine.Use(RequestID())
+	engine.Use(BasicAuth(ctx))
 }
 
 // RequestID is a middleware that injects a request ID into the context of each
@@ -59,7 +58,30 @@ func prefixGen() string {
 	}
 	return fmt.Sprintf("%s/%s", hostname, b64[0:10])
 }
+func BasicAuth(ctx *gin.Context) gin.HandlerFunc {
+	if ctx.Request.URL.Path != "/create_user" {
+		var accounts gin.Accounts
+		ctx2 := db.GinToContextWithDB(ctx)
+		users, err := models.Users(
+			qm.Where("is_deleted = false"),
+		).All(ctx2)
+		if err != nil {
+			errors.ErrJsonResponse(ctx, err, 401)
+		}
+		for _, user := range users {
+			accounts[user.Username] = user.Secret
+		}
+		if len(accounts) != 0 {
+			return gin.BasicAuth(accounts)
+		}
+		errors.ErrJsonResponse(ctx, errors.New("no users inserted"), 401)
+	}
+	return func(ctx *gin.Context) {
+		ctx.Next()
+	}
+}
 
+/*
 func Auth() gin.HandlerFunc {
 	fn := func(ctx *gin.Context) {
 		r := ctx.Request
@@ -87,14 +109,15 @@ func Auth() gin.HandlerFunc {
 		ctx.Next()
 	}
 	return fn
-}
+}*/
 
 func Logger() gin.HandlerFunc {
 	fn := gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
-		log := fmt.Sprintf("[%s] %s : %s  - Latency: %d ns - ErrorMsg: %s \n",
+		log := fmt.Sprintf("[%s] %s : %s : %d - Latency: %s - ErrorMsg: %s \n",
 			params.TimeStamp.Format("Mon Jan 2 15:04:05 MST 2006"),
 			params.Method,
 			params.Path,
+			params.StatusCode,
 			params.Latency,
 			params.ErrorMessage,
 		)
