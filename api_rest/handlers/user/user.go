@@ -15,15 +15,6 @@ import (
 	"time"
 )
 
-type User struct {
-	ID           models.UserID `json:"id"`
-	Username     string        `json:"username" `
-	Secret       string        `json:"secret" `
-	PhoneNumber  string        `json:"phone_number"`
-	ContactEmail string        `json:"email" `
-	Admin        bool          `json:"admin" `
-}
-
 func AdminCreateUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
@@ -157,21 +148,6 @@ func AdminEditUser() gin.HandlerFunc {
 			errors.ErrJsonResponse(ctxGin, ginError, http.StatusBadRequest)
 		}
 	}
-}
-
-type Usernames struct {
-	Usernames []string `json:"usernames"`
-}
-type RespUser struct {
-	ID          models.UserID  `json:"id"`
-	Username    string         `json:"usernames,omitempty"`
-	Secret      string         `json:"secret"`
-	PhoneNumber string         `json:"phone_number"`
-	Email       string         `json:"email"`
-	Admin       bool           `json:"admin"`
-	CreatedAt   time.Time      `json:"created_at"`
-	IsDeleted   bool           `json:"is_deleted"`
-	DeletedAt   _import00.Time `json:"deleted_at"`
 }
 
 func AdminGetUsers() gin.HandlerFunc {

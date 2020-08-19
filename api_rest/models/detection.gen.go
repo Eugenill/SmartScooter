@@ -14,7 +14,7 @@ import (
 
 type Detection struct {
 	TrafficLight  _import00.String `bunny:"traffic_light" json:"traffic_light" `
-	Obstacle      _import00.String `bunny:"obstacle" json:"obstacle" `
+	Obstacle      _import00.String `json:"obstacle" bunny:"obstacle" `
 	TrafficSign   NullTrafficSign  `bunny:"traffic_sign" json:"traffic_sign" `
 	Location      Point            `bunny:"location__,bind" json:"location" `
 	DetectedAt    _import01.Time   `bunny:"detected_at" json:"detected_at" `

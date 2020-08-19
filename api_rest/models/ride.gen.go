@@ -17,12 +17,12 @@ import (
 
 type Ride struct {
 	ID         RideID         `bunny:"id" json:"id" `
-	VehicleID  VehicleID      `json:"vehicle_id" bunny:"vehicle_id" `
+	VehicleID  VehicleID      `bunny:"vehicle_id" json:"vehicle_id" `
 	UserID     UserID         `bunny:"user_id" json:"user_id" `
 	PathID     PathID         `bunny:"path_id" json:"path_id" `
 	Distance   float32        `bunny:"distance" json:"distance" `
-	Duration   int32          `json:"duration" bunny:"duration" `
-	StartedAt  time.Time      `bunny:"started_at" json:"started_at" `
+	Duration   int32          `bunny:"duration" json:"duration" `
+	StartedAt  time.Time      `json:"started_at" bunny:"started_at" `
 	FinishedAt _import00.Time `bunny:"finished_at" json:"finished_at" `
 	R          *rideR         `json:"-" toml:"-" yaml:"-"`
 	L          rideL          `json:"-" toml:"-" yaml:"-"`
