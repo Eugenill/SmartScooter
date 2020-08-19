@@ -8,8 +8,14 @@ import (
 
 var ErrBadRequest = errors.New("Bad Request")
 
-func New(msg string) error {
-	return errors.New(msg)
+func New(ctx *gin.Context, msg string, errorType gin.ErrorType, meta ...interface{}) (error, *gin.Error) {
+	error := &gin.Error{
+		Err:  errors.New(msg),
+		Type: errorType,
+		Meta: meta,
+	}
+	ctx.Errors = append(ctx.Errors, error)
+	return error.Err, error
 }
 
 func PanicError(err error) {
@@ -19,7 +25,7 @@ func PanicError(err error) {
 	}
 }
 
-func ErrJsonResponse(ctx *gin.Context, err error, code int) {
+func ErrJsonResponse(ctx *gin.Context, err *gin.Error, code int) {
 	ctx.AbortWithStatusJSON(code, gin.H{
 		"error": err.Error(),
 	})

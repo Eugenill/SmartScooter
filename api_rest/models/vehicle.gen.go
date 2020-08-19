@@ -15,12 +15,12 @@ import (
 
 type Vehicle struct {
 	ID            VehicleID `bunny:"id" json:"id" `
-	CurrentRideID RideID    `bunny:"current_ride_id" json:"current_ride_id" `
+	CurrentRideID RideID    `json:"current_ride_id" bunny:"current_ride_id" `
 	LastRideID    RideID    `bunny:"last_ride_id" json:"last_ride_id" `
 	CurrentUserID UserID    `bunny:"current_user_id" json:"current_user_id" `
-	LastUserID    UserID    `json:"last_user_id" bunny:"last_user_id" `
+	LastUserID    UserID    `bunny:"last_user_id" json:"last_user_id" `
 	NumberPlate   string    `bunny:"number_plate" json:"number_plate" `
-	HelmetID      HelmetID  `json:"helmet_id" bunny:"helmet_id" `
+	HelmetID      HelmetID  `bunny:"helmet_id" json:"helmet_id" `
 	R             *vehicleR `json:"-" toml:"-" yaml:"-"`
 	L             vehicleL  `json:"-" toml:"-" yaml:"-"`
 }

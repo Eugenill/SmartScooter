@@ -10,6 +10,7 @@ func SaveDetection(client mqtt.Client, msg mqtt.Message) {
 	LogMessage(client, msg)
 
 }
+
 func LogMessage(client mqtt.Client, msg mqtt.Message) {
 	log.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))
 }

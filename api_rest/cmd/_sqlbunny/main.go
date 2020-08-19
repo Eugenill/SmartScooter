@@ -97,6 +97,8 @@ func main() {
 			Field("secret", "string"),
 			Field("contact_email", "string", Index),
 			Field("admin", "bool"),
+			Field("phone_number", "string"),
+			Field("created_at", "time"),
 			Field("is_deleted", "bool"),
 			Field("deleted_at", "time", Null),
 		),
