@@ -62,7 +62,6 @@ func main() {
 		Type("helmet_id", bunnyid.ID{Prefix: "h"}),
 		Model("helmet",
 			Field("id", "helmet_id", PrimaryKey),
-			Field("vehicle_zone", "vehicle_zone"),
 			Field("last_ping", "time"),
 			Field("helmet_status", "helmet_status"),
 		),
