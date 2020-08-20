@@ -12,27 +12,31 @@ import (
 type VehicleZone int32
 
 var VehicleZones = struct {
+	None         VehicleZone
 	CarrilBici   VehicleZone
 	CarrilZona30 VehicleZone
 	Acera        VehicleZone
 }{
-	CarrilBici:   VehicleZone(0),
-	CarrilZona30: VehicleZone(1),
-	Acera:        VehicleZone(2),
+	None:         VehicleZone(0),
+	CarrilBici:   VehicleZone(1),
+	CarrilZona30: VehicleZone(2),
+	Acera:        VehicleZone(3),
 }
 
 const ()
 
 var vehicleZoneValues = map[string]VehicleZone{
-	"carril_bici":   VehicleZone(0),
-	"carril_zona30": VehicleZone(1),
-	"acera":         VehicleZone(2),
+	"None":          VehicleZone(0),
+	"carril_bici":   VehicleZone(1),
+	"carril_zona30": VehicleZone(2),
+	"acera":         VehicleZone(3),
 }
 
 var vehicleZoneNames = map[VehicleZone]string{
-	VehicleZone(0): "carril_bici",
-	VehicleZone(1): "carril_zona30",
-	VehicleZone(2): "acera",
+	VehicleZone(0): "None",
+	VehicleZone(1): "carril_bici",
+	VehicleZone(2): "carril_zona30",
+	VehicleZone(3): "acera",
 }
 
 func (o VehicleZone) String() string {

@@ -14,15 +14,15 @@ import (
 )
 
 type Vehicle struct {
-	ID            VehicleID `bunny:"id" json:"id" `
-	CurrentRideID RideID    `bunny:"current_ride_id" json:"current_ride_id" `
-	LastRideID    RideID    `bunny:"last_ride_id" json:"last_ride_id" `
-	CurrentUserID UserID    `bunny:"current_user_id" json:"current_user_id" `
-	LastUserID    UserID    `bunny:"last_user_id" json:"last_user_id" `
-	NumberPlate   string    `bunny:"number_plate" json:"number_plate" `
-	HelmetID      HelmetID  `bunny:"helmet_id" json:"helmet_id" `
-	R             *vehicleR `json:"-" toml:"-" yaml:"-"`
-	L             vehicleL  `json:"-" toml:"-" yaml:"-"`
+	ID            VehicleID  `bunny:"id" json:"id" `
+	CurrentRideID NullRideID `bunny:"current_ride_id" json:"current_ride_id" `
+	LastRideID    NullRideID `bunny:"last_ride_id" json:"last_ride_id" `
+	CurrentUserID NullUserID `bunny:"current_user_id" json:"current_user_id" `
+	LastUserID    NullUserID `bunny:"last_user_id" json:"last_user_id" `
+	NumberPlate   string     `bunny:"number_plate" json:"number_plate" `
+	HelmetID      HelmetID   `bunny:"helmet_id" json:"helmet_id" `
+	R             *vehicleR  `json:"-" toml:"-" yaml:"-"`
+	L             vehicleL   `json:"-" toml:"-" yaml:"-"`
 }
 
 var VehicleColumns = struct {
@@ -248,7 +248,7 @@ func (vehicleL) LoadCurrentRide(ctx context.Context, slice []*Vehicle) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.CurrentRideID == foreign.ID {
+			if local.CurrentRideID.Valid && local.CurrentRideID.ID == foreign.ID {
 
 				local.R.CurrentRide = foreign
 				break
@@ -308,7 +308,7 @@ func (vehicleL) LoadLastRide(ctx context.Context, slice []*Vehicle) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.LastRideID == foreign.ID {
+			if local.LastRideID.Valid && local.LastRideID.ID == foreign.ID {
 
 				local.R.LastRide = foreign
 				break
@@ -368,7 +368,7 @@ func (vehicleL) LoadCurrentUser(ctx context.Context, slice []*Vehicle) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.CurrentUserID == foreign.ID {
+			if local.CurrentUserID.Valid && local.CurrentUserID.ID == foreign.ID {
 
 				local.R.CurrentUser = foreign
 				break
@@ -428,7 +428,7 @@ func (vehicleL) LoadLastUser(ctx context.Context, slice []*Vehicle) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.LastUserID == foreign.ID {
+			if local.LastUserID.Valid && local.LastUserID.ID == foreign.ID {
 
 				local.R.LastUser = foreign
 				break

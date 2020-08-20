@@ -16,13 +16,13 @@ import (
 )
 
 type Ride struct {
-	ID         RideID         `bunny:"id" json:"id" `
+	ID         RideID         `json:"id" bunny:"id" `
 	VehicleID  VehicleID      `bunny:"vehicle_id" json:"vehicle_id" `
 	UserID     UserID         `bunny:"user_id" json:"user_id" `
 	PathID     PathID         `bunny:"path_id" json:"path_id" `
 	Distance   float32        `bunny:"distance" json:"distance" `
-	Duration   int32          `bunny:"duration" json:"duration" `
-	StartedAt  time.Time      `json:"started_at" bunny:"started_at" `
+	Duration   int32          `json:"duration" bunny:"duration" `
+	StartedAt  time.Time      `bunny:"started_at" json:"started_at" `
 	FinishedAt _import00.Time `bunny:"finished_at" json:"finished_at" `
 	R          *rideR         `json:"-" toml:"-" yaml:"-"`
 	L          rideL          `json:"-" toml:"-" yaml:"-"`
@@ -375,7 +375,7 @@ func (rideL) LoadCurrentVehicles(ctx context.Context, slice []*Ride) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.ID == foreign.CurrentRideID {
+			if foreign.CurrentRideID.Valid && foreign.CurrentRideID.ID == local.ID {
 
 				local.R.CurrentVehicles = append(local.R.CurrentVehicles, foreign)
 
@@ -434,7 +434,7 @@ func (rideL) LoadLastVehicles(ctx context.Context, slice []*Ride) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.ID == foreign.LastRideID {
+			if foreign.LastRideID.Valid && foreign.LastRideID.ID == local.ID {
 
 				local.R.LastVehicles = append(local.R.LastVehicles, foreign)
 

@@ -13,25 +13,25 @@ func IDFromString(s string) (interface{}, error) {
 	switch parts[0] {
 	case "rd":
 		return RideDetectionIDFromString(s)
-	case "v":
-		return VehicleIDFromString(s)
-	case "h":
-		return HelmetIDFromString(s)
-	case "usr":
-		return UserIDFromString(s)
 	case "pa":
 		return PathIDFromString(s)
+	case "h":
+		return HelmetIDFromString(s)
 	case "r":
 		return RideIDFromString(s)
+	case "usr":
+		return UserIDFromString(s)
+	case "v":
+		return VehicleIDFromString(s)
 	}
 	return nil, fmt.Errorf("Unknown ID type %s", parts[0])
 }
 
 var idPrefixes = map[string]string{
 	"rd":  "ride_detection_id",
-	"v":   "vehicle_id",
-	"h":   "helmet_id",
-	"usr": "user_id",
 	"pa":  "path_id",
+	"h":   "helmet_id",
 	"r":   "ride_id",
+	"usr": "user_id",
+	"v":   "vehicle_id",
 }

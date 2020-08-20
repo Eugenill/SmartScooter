@@ -26,17 +26,20 @@ func main() {
 		)),
 
 		Type("vehicle_zone", Enum(
+			"None",
 			"carril_bici",
 			"carril_zona30",
 			"acera",
 		)),
 
 		Type("helmet_status", Enum(
+			"None",
 			"connected",
 			"not_connected",
 			"connection_error",
 		)),
 		Type("traffic_sign", Enum(
+			"None",
 			"stop",
 			"yield",
 			"vel_10",
@@ -53,7 +56,7 @@ func main() {
 		Type("detection", Struct(
 			Field("traffic_light", "string", Null),
 			Field("obstacle", "string", Null),
-			Field("traffic_sign", "traffic_sign", Null),
+			Field("traffic_sign", "traffic_sign"),
 			Field("location", "point"),
 			Field("detected_at", "time"),
 			Field("detection_zone", "vehicle_zone"),
@@ -62,17 +65,17 @@ func main() {
 		Type("helmet_id", bunnyid.ID{Prefix: "h"}),
 		Model("helmet",
 			Field("id", "helmet_id", PrimaryKey),
-			Field("last_ping", "time"),
+			Field("last_ping", "time", Null),
 			Field("helmet_status", "helmet_status"),
 		),
 
 		Type("vehicle_id", bunnyid.ID{Prefix: "v"}),
 		Model("vehicle",
 			Field("id", "vehicle_id", PrimaryKey),
-			Field("current_ride_id", "ride_id", ForeignKey("ride")),
-			Field("last_ride_id", "ride_id", ForeignKey("ride")),
-			Field("current_user_id", "user_id", ForeignKey("user")),
-			Field("last_user_id", "user_id", ForeignKey("user")),
+			Field("current_ride_id", "ride_id", Null, ForeignKey("ride")),
+			Field("last_ride_id", "ride_id", Null, ForeignKey("ride")),
+			Field("current_user_id", "user_id", Null, ForeignKey("user")),
+			Field("last_user_id", "user_id", Null, ForeignKey("user")),
 			Field("number_plate", "string"),
 			Field("helmet_id", "helmet_id", ForeignKey("helmet"), Index),
 		),

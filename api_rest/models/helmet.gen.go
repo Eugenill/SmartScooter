@@ -8,18 +8,18 @@ import (
 	qm "github.com/sqlbunny/sqlbunny/runtime/qm"
 	queries "github.com/sqlbunny/sqlbunny/runtime/queries"
 	strmangle "github.com/sqlbunny/sqlbunny/runtime/strmangle"
+	_import00 "github.com/sqlbunny/sqlbunny/types/null"
 	reflect "reflect"
 	strings "strings"
 	sync "sync"
-	time "time"
 )
 
 type Helmet struct {
-	ID           HelmetID     `bunny:"id" json:"id" `
-	LastPing     time.Time    `json:"last_ping" bunny:"last_ping" `
-	HelmetStatus HelmetStatus `bunny:"helmet_status" json:"helmet_status" `
-	R            *helmetR     `json:"-" toml:"-" yaml:"-"`
-	L            helmetL      `json:"-" toml:"-" yaml:"-"`
+	ID           HelmetID       `bunny:"id" json:"id" `
+	LastPing     _import00.Time `json:"last_ping" bunny:"last_ping" `
+	HelmetStatus HelmetStatus   `bunny:"helmet_status" json:"helmet_status" `
+	R            *helmetR       `json:"-" toml:"-" yaml:"-"`
+	L            helmetL        `json:"-" toml:"-" yaml:"-"`
 }
 
 var HelmetColumns = struct {

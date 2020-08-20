@@ -12,27 +12,31 @@ import (
 type HelmetStatus int32
 
 var HelmetStatuses = struct {
+	None            HelmetStatus
 	Connected       HelmetStatus
 	NotConnected    HelmetStatus
 	ConnectionError HelmetStatus
 }{
-	Connected:       HelmetStatus(0),
-	NotConnected:    HelmetStatus(1),
-	ConnectionError: HelmetStatus(2),
+	None:            HelmetStatus(0),
+	Connected:       HelmetStatus(1),
+	NotConnected:    HelmetStatus(2),
+	ConnectionError: HelmetStatus(3),
 }
 
 const ()
 
 var helmetStatusValues = map[string]HelmetStatus{
-	"connected":        HelmetStatus(0),
-	"not_connected":    HelmetStatus(1),
-	"connection_error": HelmetStatus(2),
+	"None":             HelmetStatus(0),
+	"connected":        HelmetStatus(1),
+	"not_connected":    HelmetStatus(2),
+	"connection_error": HelmetStatus(3),
 }
 
 var helmetStatusNames = map[HelmetStatus]string{
-	HelmetStatus(0): "connected",
-	HelmetStatus(1): "not_connected",
-	HelmetStatus(2): "connection_error",
+	HelmetStatus(0): "None",
+	HelmetStatus(1): "connected",
+	HelmetStatus(2): "not_connected",
+	HelmetStatus(3): "connection_error",
 }
 
 func (o HelmetStatus) String() string {

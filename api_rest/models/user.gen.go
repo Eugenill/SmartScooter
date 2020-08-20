@@ -21,9 +21,9 @@ type User struct {
 	Secret       string         `bunny:"secret" json:"secret" `
 	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
 	Admin        bool           `bunny:"admin" json:"admin" `
-	PhoneNumber  string         `json:"phone_number" bunny:"phone_number" `
-	CreatedAt    time.Time      `json:"created_at" bunny:"created_at" `
-	IsDeleted    bool           `bunny:"is_deleted" json:"is_deleted" `
+	PhoneNumber  string         `bunny:"phone_number" json:"phone_number" `
+	CreatedAt    time.Time      `bunny:"created_at" json:"created_at" `
+	IsDeleted    bool           `json:"is_deleted" bunny:"is_deleted" `
 	DeletedAt    _import00.Time `bunny:"deleted_at" json:"deleted_at" `
 	R            *userR         `json:"-" toml:"-" yaml:"-"`
 	L            userL          `json:"-" toml:"-" yaml:"-"`
@@ -254,7 +254,7 @@ func (userL) LoadCurrentVehicles(ctx context.Context, slice []*User) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.ID == foreign.CurrentUserID {
+			if foreign.CurrentUserID.Valid && foreign.CurrentUserID.ID == local.ID {
 
 				local.R.CurrentVehicles = append(local.R.CurrentVehicles, foreign)
 
@@ -313,7 +313,7 @@ func (userL) LoadLastVehicles(ctx context.Context, slice []*User) error {
 
 	for _, local := range slice {
 		for _, foreign := range resultSlice {
-			if local.ID == foreign.LastUserID {
+			if foreign.LastUserID.Valid && foreign.LastUserID.ID == local.ID {
 
 				local.R.LastVehicles = append(local.R.LastVehicles, foreign)
 
