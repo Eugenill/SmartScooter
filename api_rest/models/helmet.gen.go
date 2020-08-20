@@ -16,7 +16,8 @@ import (
 
 type Helmet struct {
 	ID           HelmetID       `bunny:"id" json:"id" `
-	LastPing     _import00.Time `json:"last_ping" bunny:"last_ping" `
+	Name         string         `bunny:"name" json:"name" `
+	LastPing     _import00.Time `bunny:"last_ping" json:"last_ping" `
 	HelmetStatus HelmetStatus   `bunny:"helmet_status" json:"helmet_status" `
 	R            *helmetR       `json:"-" toml:"-" yaml:"-"`
 	L            helmetL        `json:"-" toml:"-" yaml:"-"`
@@ -24,10 +25,12 @@ type Helmet struct {
 
 var HelmetColumns = struct {
 	ID           string
+	Name         string
 	LastPing     string
 	HelmetStatus string
 }{
 	ID:           "id",
+	Name:         "name",
 	LastPing:     "last_ping",
 	HelmetStatus: "helmet_status",
 }
@@ -39,9 +42,9 @@ type helmetR struct {
 type helmetL struct{}
 
 var (
-	helmetColumns              = []string{"id", "last_ping", "helmet_status"}
+	helmetColumns              = []string{"id", "name", "last_ping", "helmet_status"}
 	helmetPrimaryKeyColumns    = []string{"id"}
-	helmetNonPrimaryKeyColumns = []string{"last_ping", "helmet_status"}
+	helmetNonPrimaryKeyColumns = []string{"name", "last_ping", "helmet_status"}
 )
 
 type (
