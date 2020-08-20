@@ -23,6 +23,7 @@ func AdminCreateUser() gin.HandlerFunc {
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&usr, r); err != nil {
+				err, ginError = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate)
 				return err
 			}
 			existUser, err := models.Users(
@@ -78,6 +79,7 @@ func AdminDeleteUser() gin.HandlerFunc {
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&usr, r); err != nil {
+				err, ginError = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate)
 				return err
 			}
 			user, err := models.Users(
@@ -115,6 +117,7 @@ func AdminEditUser() gin.HandlerFunc {
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&usr, r); err != nil {
+				err, ginError = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate)
 				return err
 			}
 			user, err := models.Users(
@@ -160,6 +163,7 @@ func AdminGetUsers() gin.HandlerFunc {
 		ctx := db.GinToContextWithDB(ctxGin)
 		err = bunny.Atomic(ctx, func(ctx context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&users, r); err != nil {
+				err, ginError = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate)
 				return err
 			}
 			if len(users.Usernames) != 0 {

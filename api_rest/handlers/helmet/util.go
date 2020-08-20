@@ -1,12 +1,13 @@
-package vehicle
+package helmet
 
 import (
+	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/models"
-	"github.com/gin-gonic/gin"
 )
 
-func CheckVehicle(ctx *gin.Context, id models.VehicleID) (bool, error) {
-	_, err := models.FindVehicle(ctx, id)
+//this function context must contain the DB
+func CheckHelmet(ctx context.Context, id models.HelmetID) (bool, error) {
+	_, err := models.FindHelmet(ctx, id)
 	if err != nil {
 		return false, err
 	}

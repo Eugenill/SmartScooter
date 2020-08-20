@@ -1,25 +1,34 @@
-package vehicle
+package helmet
 
 import (
+	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/models"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/contxt"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/sqlbunny/sqlbunny/runtime/bunny"
 	"net/http"
 )
 
 func AddHelmet() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		vID := contxt.RequestHeader(ctx, "vehicleID")
-		vehID, err := models.VehicleIDFromString(vID)
+	meta := map[string]string{"function": "AddHelmet"}
+	return func(ctxGin *gin.Context) {
+		ginErr := &gin.Error{}
+		var err error
+		ctx2 := db.GinToContextWithDB(ctxGin)
+		err = bunny.Atomic(ctx2, func(ctx2 context.Context) error {
+			helmet := &models.Helmet{
+				ID: models.NewHelmetID(),
+			}
+			err = helmet.Insert(ctx2)
+			if err != nil {
+				err, ginErr = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate, meta)
+				return err
+			}
+			return nil
+		})
 		if err != nil {
-			_, ginErr := errors.New(ctx, "vehicleId is not valid", gin.ErrorTypePrivate)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-		}
-		ok, err := CheckVehicle(ctx, vehID)
-		if !ok {
-			_, ginErr := errors.New(ctx, "vehicle not exist", gin.ErrorTypePrivate)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
+			errors.ErrJsonResponse(ctxGin, ginErr, http.StatusBadRequest)
 		}
 	}
 }
