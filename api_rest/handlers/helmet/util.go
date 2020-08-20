@@ -13,3 +13,7 @@ func CheckHelmet(ctx context.Context, id models.HelmetID) (bool, error) {
 	}
 	return true, nil
 }
+
+type CreateHelmet struct {
+	Name string `json:"name"`
+}
