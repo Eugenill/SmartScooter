@@ -18,7 +18,7 @@ type Detection struct {
 	Obstacle      _import00.String `bunny:"obstacle" json:"obstacle" `
 	TrafficSign   TrafficSign      `bunny:"traffic_sign" json:"traffic_sign" `
 	Location      _import01.Point  `bunny:"location" json:"location" `
-	DetectedAt    _import02.Time   `bunny:"detected_at" json:"detected_at" `
+	DetectedAt    _import02.Time   `json:"detected_at" bunny:"detected_at" `
 	DetectionZone VehicleZone      `bunny:"detection_zone" json:"detection_zone" `
 }
 type NullDetection struct {

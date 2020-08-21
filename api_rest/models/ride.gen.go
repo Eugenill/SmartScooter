@@ -20,7 +20,7 @@ type Ride struct {
 	ID         RideID                `bunny:"id" json:"id" `
 	VehicleID  VehicleID             `bunny:"vehicle_id" json:"vehicle_id" `
 	UserID     UserID                `bunny:"user_id" json:"user_id" `
-	Path       _import00.LineStringM `json:"path" bunny:"path" `
+	Path       _import00.LineStringM `bunny:"path" json:"path" `
 	Distance   float32               `bunny:"distance" json:"distance" `
 	Duration   int32                 `bunny:"duration" json:"duration" `
 	StartedAt  time.Time             `bunny:"started_at" json:"started_at" `

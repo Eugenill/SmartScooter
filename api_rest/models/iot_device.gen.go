@@ -15,9 +15,9 @@ import (
 )
 
 type IotDevice struct {
-	ID              IotDeviceID    `bunny:"id" json:"id" `
-	Name            string         `bunny:"name" json:"name" `
-	LastPing        _import00.Time `bunny:"last_ping" json:"last_ping" `
+	ID              IotDeviceID    `json:"id" bunny:"id" `
+	Name            string         `json:"name" bunny:"name" `
+	LastPing        _import00.Time `json:"last_ping" bunny:"last_ping" `
 	IotDeviceStatus DeviceStatus   `bunny:"iot_device_status" json:"iot_device_status" `
 	R               *iotDeviceR    `json:"-" toml:"-" yaml:"-"`
 	L               iotDeviceL     `json:"-" toml:"-" yaml:"-"`

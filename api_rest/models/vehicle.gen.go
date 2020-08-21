@@ -14,7 +14,7 @@ import (
 )
 
 type Vehicle struct {
-	ID            VehicleID   `bunny:"id" json:"id" `
+	ID            VehicleID   `json:"id" bunny:"id" `
 	CurrentRideID NullRideID  `bunny:"current_ride_id" json:"current_ride_id" `
 	LastRideID    NullRideID  `bunny:"last_ride_id" json:"last_ride_id" `
 	CurrentUserID NullUserID  `bunny:"current_user_id" json:"current_user_id" `

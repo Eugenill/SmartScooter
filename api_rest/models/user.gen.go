@@ -16,15 +16,15 @@ import (
 )
 
 type User struct {
-	ID           UserID         `bunny:"id" json:"id" `
+	ID           UserID         `json:"id" bunny:"id" `
 	Username     string         `bunny:"username" json:"username" `
-	Secret       string         `json:"secret" bunny:"secret" `
+	Secret       string         `bunny:"secret" json:"secret" `
 	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
 	Admin        bool           `bunny:"admin" json:"admin" `
 	PhoneNumber  string         `bunny:"phone_number" json:"phone_number" `
-	CreatedAt    time.Time      `bunny:"created_at" json:"created_at" `
+	CreatedAt    time.Time      `json:"created_at" bunny:"created_at" `
 	IsDeleted    bool           `bunny:"is_deleted" json:"is_deleted" `
-	DeletedAt    _import00.Time `bunny:"deleted_at" json:"deleted_at" `
+	DeletedAt    _import00.Time `json:"deleted_at" bunny:"deleted_at" `
 	R            *userR         `json:"-" toml:"-" yaml:"-"`
 	L            userL          `json:"-" toml:"-" yaml:"-"`
 }
