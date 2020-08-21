@@ -11,54 +11,50 @@ import (
 	reflect "reflect"
 	strings "strings"
 	sync "sync"
+	time "time"
 )
 
 type RideDetection struct {
 	ID        RideDetectionID `bunny:"id" json:"id" `
 	RideID    RideID          `bunny:"ride_id" json:"ride_id" `
-	UserID    UserID          `bunny:"user_id" json:"user_id" `
 	Detection Detection       `bunny:"detection__,bind" json:"detection" `
+	CreatedAt time.Time       `bunny:"created_at" json:"created_at" `
 	R         *rideDetectionR `json:"-" toml:"-" yaml:"-"`
 	L         rideDetectionL  `json:"-" toml:"-" yaml:"-"`
 }
 
 var RideDetectionColumns = struct {
-	ID                         string
-	RideID                     string
-	UserID                     string
-	DetectionTrafficLight      string
-	DetectionObstacle          string
-	DetectionTrafficSign       string
-	DetectionLocationLatitude  string
-	DetectionLocationLongitude string
-	DetectionLocationAccuracy  string
-	DetectionDetectedAt        string
-	DetectionDetectionZone     string
+	ID                     string
+	RideID                 string
+	DetectionTrafficLight  string
+	DetectionObstacle      string
+	DetectionTrafficSign   string
+	DetectionLocation      string
+	DetectionDetectedAt    string
+	DetectionDetectionZone string
+	CreatedAt              string
 }{
-	ID:                         "id",
-	RideID:                     "ride_id",
-	UserID:                     "user_id",
-	DetectionTrafficLight:      "detection__traffic_light",
-	DetectionObstacle:          "detection__obstacle",
-	DetectionTrafficSign:       "detection__traffic_sign",
-	DetectionLocationLatitude:  "detection__location__latitude",
-	DetectionLocationLongitude: "detection__location__longitude",
-	DetectionLocationAccuracy:  "detection__location__accuracy",
-	DetectionDetectedAt:        "detection__detected_at",
-	DetectionDetectionZone:     "detection__detection_zone",
+	ID:                     "id",
+	RideID:                 "ride_id",
+	DetectionTrafficLight:  "detection__traffic_light",
+	DetectionObstacle:      "detection__obstacle",
+	DetectionTrafficSign:   "detection__traffic_sign",
+	DetectionLocation:      "detection__location",
+	DetectionDetectedAt:    "detection__detected_at",
+	DetectionDetectionZone: "detection__detection_zone",
+	CreatedAt:              "created_at",
 }
 
 type rideDetectionR struct {
 	Ride *Ride
-	User *User
 }
 
 type rideDetectionL struct{}
 
 var (
-	rideDetectionColumns              = []string{"id", "ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at", "detection__detection_zone"}
+	rideDetectionColumns              = []string{"id", "ride_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location", "detection__detected_at", "detection__detection_zone", "created_at"}
 	rideDetectionPrimaryKeyColumns    = []string{"id"}
-	rideDetectionNonPrimaryKeyColumns = []string{"ride_id", "user_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location__latitude", "detection__location__longitude", "detection__location__accuracy", "detection__detected_at", "detection__detection_zone"}
+	rideDetectionNonPrimaryKeyColumns = []string{"ride_id", "detection__traffic_light", "detection__obstacle", "detection__traffic_sign", "detection__location", "detection__detected_at", "detection__detection_zone", "created_at"}
 )
 
 type (
@@ -193,66 +189,6 @@ func (rideDetectionL) LoadRide(ctx context.Context, slice []*RideDetection) erro
 			if local.RideID == foreign.ID {
 
 				local.R.Ride = foreign
-				break
-
-			}
-		}
-	}
-
-	return nil
-}
-
-func (o *RideDetection) User(mods ...qm.QueryMod) userQuery {
-	queryMods := []qm.QueryMod{
-
-		qm.Where("\"id\"=?", o.UserID),
-	}
-
-	queryMods = append(queryMods, mods...)
-	query := Users(queryMods...)
-	queries.SetFrom(query.Query, "\"user\"")
-	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"user\".*"})
-	}
-
-	return query
-}
-
-func (rideDetectionL) LoadUser(ctx context.Context, slice []*RideDetection) error {
-	args := make([]interface{}, len(slice)*1)
-	for i, obj := range slice {
-		if obj.R == nil {
-			obj.R = &rideDetectionR{}
-		}
-
-		args[i*1+0] = obj.UserID
-
-	}
-
-	where := fmt.Sprintf(
-		"\"f\".\"id\" in (%s)",
-		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
-	)
-	query := NewQuery(
-		qm.Select("f.*"),
-		qm.From("\"user\" AS f"),
-		qm.Where(where, args...),
-	)
-
-	var resultSlice []*User
-	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice User: %w", err)
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.UserID == foreign.ID {
-
-				local.R.User = foreign
 				break
 
 			}

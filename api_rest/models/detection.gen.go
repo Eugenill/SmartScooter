@@ -1,8 +1,9 @@
 package models
 
 import (
+	_import01 "github.com/sqlbunny/geo"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
-	_import01 "time"
+	_import02 "time"
 )
 
 import (
@@ -16,8 +17,8 @@ type Detection struct {
 	TrafficLight  _import00.String `bunny:"traffic_light" json:"traffic_light" `
 	Obstacle      _import00.String `bunny:"obstacle" json:"obstacle" `
 	TrafficSign   TrafficSign      `bunny:"traffic_sign" json:"traffic_sign" `
-	Location      Point            `bunny:"location__,bind" json:"location" `
-	DetectedAt    _import01.Time   `bunny:"detected_at" json:"detected_at" `
+	Location      _import01.Point  `bunny:"location" json:"location" `
+	DetectedAt    _import02.Time   `bunny:"detected_at" json:"detected_at" `
 	DetectionZone VehicleZone      `bunny:"detection_zone" json:"detection_zone" `
 }
 type NullDetection struct {

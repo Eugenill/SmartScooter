@@ -19,11 +19,21 @@ func main() {
 		&stdtypes.Plugin{},
 		&bunnyid.Plugin{},
 
-		Type("point", Struct(
-			Field("latitude", "float64"),
-			Field("longitude", "float64"),
-			Field("accuracy", "float64"),
-		)),
+		Type("point", BaseType{
+			Go:     "github.com/sqlbunny/geo.Point",
+			GoNull: "github.com/sqlbunny/geo/null.Point",
+			Postgres: SQLType{
+				Type: "geography(Point, 4326)",
+			},
+		}),
+
+		Type("line_string_m", BaseType{
+			Go:     "github.com/sqlbunny/geo.LineStringM",
+			GoNull: "github.com/sqlbunny/geo/null.LineStringM",
+			Postgres: SQLType{
+				Type: "geography(LineStringM, 4326)",
+			},
+		}),
 
 		Type("vehicle_zone", Enum(
 			"None",
@@ -47,12 +57,7 @@ func main() {
 			"vel_30",
 			"people",
 		)),
-		Type("path_id", bunnyid.ID{Prefix: "pa"}),
-		Model("path",
-			Field("id", "path_id", PrimaryKey),
-			Field("ride_id", "ride_id", ForeignKey("ride")),
-			Field("point", "point"),
-		),
+
 		Type("detection", Struct(
 			Field("traffic_light", "string", Null),
 			Field("obstacle", "string", Null),
@@ -95,7 +100,7 @@ func main() {
 			Field("id", "ride_id", PrimaryKey),
 			Field("vehicle_id", "vehicle_id", ForeignKey("vehicle")),
 			Field("user_id", "user_id", ForeignKey("user")),
-			Field("path_id", "path_id", ForeignKey("path")),
+			Field("path", "line_string_m", Null),
 			Field("distance", "float32"),
 			Field("duration", "int32"),
 			Field("started_at", "time", Index),
@@ -118,8 +123,8 @@ func main() {
 		Model("ride_detection",
 			Field("id", "ride_detection_id", PrimaryKey),
 			Field("ride_id", "ride_id", ForeignKey("ride")),
-			Field("user_id", "user_id", ForeignKey("user")),
 			Field("detection", "detection"),
+			Field("created_at", "time"),
 		),
 	)
 }

@@ -17,14 +17,14 @@ import (
 
 type User struct {
 	ID           UserID         `bunny:"id" json:"id" `
-	Username     string         `json:"username" bunny:"username" `
-	Secret       string         `bunny:"secret" json:"secret" `
+	Username     string         `bunny:"username" json:"username" `
+	Secret       string         `json:"secret" bunny:"secret" `
 	ContactEmail string         `bunny:"contact_email" json:"contact_email" `
 	Admin        bool           `bunny:"admin" json:"admin" `
 	PhoneNumber  string         `bunny:"phone_number" json:"phone_number" `
 	CreatedAt    time.Time      `bunny:"created_at" json:"created_at" `
 	IsDeleted    bool           `bunny:"is_deleted" json:"is_deleted" `
-	DeletedAt    _import00.Time `json:"deleted_at" bunny:"deleted_at" `
+	DeletedAt    _import00.Time `bunny:"deleted_at" json:"deleted_at" `
 	R            *userR         `json:"-" toml:"-" yaml:"-"`
 	L            userL          `json:"-" toml:"-" yaml:"-"`
 }
@@ -55,7 +55,6 @@ type userR struct {
 	Rides           RideSlice
 	CurrentVehicles VehicleSlice
 	LastVehicles    VehicleSlice
-	RideDetections  RideDetectionSlice
 }
 
 type userL struct{}
@@ -316,65 +315,6 @@ func (userL) LoadLastVehicles(ctx context.Context, slice []*User) error {
 			if foreign.LastUserID.Valid && foreign.LastUserID.ID == local.ID {
 
 				local.R.LastVehicles = append(local.R.LastVehicles, foreign)
-
-			}
-		}
-	}
-
-	return nil
-}
-
-func (o *User) RideDetections(mods ...qm.QueryMod) rideDetectionQuery {
-	queryMods := []qm.QueryMod{
-
-		qm.Where("\"user_id\"=?", o.ID),
-	}
-
-	queryMods = append(queryMods, mods...)
-	query := RideDetections(queryMods...)
-	queries.SetFrom(query.Query, "\"ride_detection\"")
-	if len(queries.GetSelect(query.Query)) == 0 {
-		queries.SetSelect(query.Query, []string{"\"ride_detection\".*"})
-	}
-
-	return query
-}
-
-func (userL) LoadRideDetections(ctx context.Context, slice []*User) error {
-	args := make([]interface{}, len(slice)*1)
-	for i, obj := range slice {
-		if obj.R == nil {
-			obj.R = &userR{}
-		}
-
-		args[i*1+0] = obj.ID
-
-	}
-
-	where := fmt.Sprintf(
-		"\"f\".\"user_id\" in (%s)",
-		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
-	)
-	query := NewQuery(
-		qm.Select("f.*"),
-		qm.From("\"ride_detection\" AS f"),
-		qm.Where(where, args...),
-	)
-
-	var resultSlice []*RideDetection
-	if err := query.Bind(ctx, &resultSlice); err != nil {
-		return errors.Errorf("failed to bind eager loaded slice RideDetection: %w", err)
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.ID == foreign.UserID {
-
-				local.R.RideDetections = append(local.R.RideDetections, foreign)
 
 			}
 		}
