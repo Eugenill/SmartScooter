@@ -14,6 +14,10 @@ func CheckHelmet(ctx context.Context, id models.HelmetID) (bool, error) {
 	return true, nil
 }
 
-type CreateHelmet struct {
+type ReqHelmet struct {
 	Name string `json:"name"`
+}
+
+type ReqHelmetID struct {
+	ID models.HelmetID `json:"id"`
 }

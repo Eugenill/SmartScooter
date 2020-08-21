@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type User struct {
+type ReqUser struct {
 	ID           models.UserID `json:"id"`
 	Username     string        `json:"username" `
 	Secret       string        `json:"secret" `
@@ -15,7 +15,7 @@ type User struct {
 	Admin        bool          `json:"admin" `
 }
 
-type Usernames struct {
+type ReqUsernames struct {
 	Usernames []string `json:"usernames"`
 }
 type RespUser struct {

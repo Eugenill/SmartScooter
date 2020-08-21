@@ -14,6 +14,10 @@ func CheckIotDev(ctx context.Context, id models.IotDeviceID) (bool, error) {
 	return true, nil
 }
 
-type CreateIotDev struct {
+type ReqIotDev struct {
 	Name string `json:"name"`
+}
+
+type ReqIotDevID struct {
+	ID models.IotDeviceID `json:"id"`
 }

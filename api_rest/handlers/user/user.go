@@ -18,7 +18,7 @@ import (
 func AdminCreateUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		var usr User
+		usr := ReqUser{}
 		var ginError *gin.Error
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
@@ -74,7 +74,7 @@ func AdminCreateUser() gin.HandlerFunc {
 func AdminDeleteUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		var usr User
+		usr := ReqUser{}
 		var ginError *gin.Error
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
@@ -112,7 +112,7 @@ func AdminDeleteUser() gin.HandlerFunc {
 func AdminEditUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		var usr User
+		usr := &ReqUser{}
 		var ginError *gin.Error
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
@@ -156,7 +156,7 @@ func AdminEditUser() gin.HandlerFunc {
 func AdminGetUsers() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		var users Usernames
+		users := &ReqUsernames{}
 		var userResp []*RespUser
 		var ginError *gin.Error
 		var err error

@@ -14,8 +14,9 @@ func CheckVehicle(ctx context.Context, id models.VehicleID) (bool, error) {
 	return true, nil
 }
 
-type CreateVehicle struct {
-	ID          string `json:"id"`
-	NumberPlate string `json:"number_plate" `
-	HelmetID    string `json:"helmet_id" `
+type ReqVehicle struct {
+	ID          models.VehicleID   `json:"id"`
+	NumberPlate string             `json:"number_plate" `
+	HelmetID    models.HelmetID    `json:"helmet_id" `
+	IotDevID    models.IotDeviceID `json:"iot_dev_id"`
 }

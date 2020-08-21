@@ -2,7 +2,12 @@ package reby
 
 import "net/http"
 
-const BearerETSEIB string = "Bearer sess_3quryhvtzpp52va3str1_b851ee78f84c6c4bdebb43e1eb27498397897cb53c8519dc"
+const (
+	BearerETSEIB  string = "Bearer sess_3quryhvtzpp52va3str1_b851ee78f84c6c4bdebb43e1eb27498397897cb53c8519dc"
+	RebyHost      string = "https://api.reby.co/v2/research"
+	RebyRide      string = "/ride"
+	VehicleEtseib string = "v_3nj4jkytuxpxqnqtkrk1"
+)
 
 func SetHeaders(vehID string, bearer string) http.Header {
 	hdr := http.Header{}
