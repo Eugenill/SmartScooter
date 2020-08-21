@@ -13,7 +13,7 @@ import (
 )
 
 func AddVehicle() gin.HandlerFunc {
-	meta := map[string]string{"function": "AddVehicle"}
+	meta := map[string]string{"app": "AddVehicle"}
 	return func(ctxGin *gin.Context) {
 		vehicle := &CreateVehicle{}
 		r := ctxGin.Request
