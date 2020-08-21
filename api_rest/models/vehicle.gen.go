@@ -14,15 +14,16 @@ import (
 )
 
 type Vehicle struct {
-	ID            VehicleID  `bunny:"id" json:"id" `
-	CurrentRideID NullRideID `bunny:"current_ride_id" json:"current_ride_id" `
-	LastRideID    NullRideID `bunny:"last_ride_id" json:"last_ride_id" `
-	CurrentUserID NullUserID `bunny:"current_user_id" json:"current_user_id" `
-	LastUserID    NullUserID `bunny:"last_user_id" json:"last_user_id" `
-	NumberPlate   string     `bunny:"number_plate" json:"number_plate" `
-	HelmetID      HelmetID   `bunny:"helmet_id" json:"helmet_id" `
-	R             *vehicleR  `json:"-" toml:"-" yaml:"-"`
-	L             vehicleL   `json:"-" toml:"-" yaml:"-"`
+	ID            VehicleID   `json:"id" bunny:"id" `
+	CurrentRideID NullRideID  `bunny:"current_ride_id" json:"current_ride_id" `
+	LastRideID    NullRideID  `bunny:"last_ride_id" json:"last_ride_id" `
+	CurrentUserID NullUserID  `bunny:"current_user_id" json:"current_user_id" `
+	LastUserID    NullUserID  `bunny:"last_user_id" json:"last_user_id" `
+	NumberPlate   string      `bunny:"number_plate" json:"number_plate" `
+	HelmetID      HelmetID    `bunny:"helmet_id" json:"helmet_id" `
+	IotDeviceID   IotDeviceID `json:"iot_device_id" bunny:"iot_device_id" `
+	R             *vehicleR   `json:"-" toml:"-" yaml:"-"`
+	L             vehicleL    `json:"-" toml:"-" yaml:"-"`
 }
 
 var VehicleColumns = struct {
@@ -33,6 +34,7 @@ var VehicleColumns = struct {
 	LastUserID    string
 	NumberPlate   string
 	HelmetID      string
+	IotDeviceID   string
 }{
 	ID:            "id",
 	CurrentRideID: "current_ride_id",
@@ -41,6 +43,7 @@ var VehicleColumns = struct {
 	LastUserID:    "last_user_id",
 	NumberPlate:   "number_plate",
 	HelmetID:      "helmet_id",
+	IotDeviceID:   "iot_device_id",
 }
 
 type vehicleR struct {
@@ -50,14 +53,15 @@ type vehicleR struct {
 	CurrentUser *User
 	LastUser    *User
 	Helmet      *Helmet
+	IotDevice   *IotDevice
 }
 
 type vehicleL struct{}
 
 var (
-	vehicleColumns              = []string{"id", "current_ride_id", "last_ride_id", "current_user_id", "last_user_id", "number_plate", "helmet_id"}
+	vehicleColumns              = []string{"id", "current_ride_id", "last_ride_id", "current_user_id", "last_user_id", "number_plate", "helmet_id", "iot_device_id"}
 	vehiclePrimaryKeyColumns    = []string{"id"}
-	vehicleNonPrimaryKeyColumns = []string{"current_ride_id", "last_ride_id", "current_user_id", "last_user_id", "number_plate", "helmet_id"}
+	vehicleNonPrimaryKeyColumns = []string{"current_ride_id", "last_ride_id", "current_user_id", "last_user_id", "number_plate", "helmet_id", "iot_device_id"}
 )
 
 type (
@@ -491,6 +495,66 @@ func (vehicleL) LoadHelmet(ctx context.Context, slice []*Vehicle) error {
 			if local.HelmetID == foreign.ID {
 
 				local.R.Helmet = foreign
+				break
+
+			}
+		}
+	}
+
+	return nil
+}
+
+func (o *Vehicle) IotDevice(mods ...qm.QueryMod) iotDeviceQuery {
+	queryMods := []qm.QueryMod{
+
+		qm.Where("\"id\"=?", o.IotDeviceID),
+	}
+
+	queryMods = append(queryMods, mods...)
+	query := IotDevices(queryMods...)
+	queries.SetFrom(query.Query, "\"iot_device\"")
+	if len(queries.GetSelect(query.Query)) == 0 {
+		queries.SetSelect(query.Query, []string{"\"iot_device\".*"})
+	}
+
+	return query
+}
+
+func (vehicleL) LoadIotDevice(ctx context.Context, slice []*Vehicle) error {
+	args := make([]interface{}, len(slice)*1)
+	for i, obj := range slice {
+		if obj.R == nil {
+			obj.R = &vehicleR{}
+		}
+
+		args[i*1+0] = obj.IotDeviceID
+
+	}
+
+	where := fmt.Sprintf(
+		"\"f\".\"id\" in (%s)",
+		strmangle.Placeholders(dialect.IndexPlaceholders, len(slice)*1, 1, 1),
+	)
+	query := NewQuery(
+		qm.Select("f.*"),
+		qm.From("\"iot_device\" AS f"),
+		qm.Where(where, args...),
+	)
+
+	var resultSlice []*IotDevice
+	if err := query.Bind(ctx, &resultSlice); err != nil {
+		return errors.Errorf("failed to bind eager loaded slice IotDevice: %w", err)
+	}
+
+	if len(resultSlice) == 0 {
+		return nil
+	}
+
+	for _, local := range slice {
+		for _, foreign := range resultSlice {
+			if local.IotDeviceID == foreign.ID {
+
+				local.R.IotDevice = foreign
 				break
 
 			}

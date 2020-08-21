@@ -32,7 +32,7 @@ func main() {
 			"acera",
 		)),
 
-		Type("helmet_status", Enum(
+		Type("device_status", Enum(
 			"None",
 			"connected",
 			"not_connected",
@@ -67,7 +67,15 @@ func main() {
 			Field("id", "helmet_id", PrimaryKey),
 			Field("name", "string", Unique),
 			Field("last_ping", "time", Null),
-			Field("helmet_status", "helmet_status"),
+			Field("helmet_status", "device_status"),
+		),
+
+		Type("iot_device_id", bunnyid.ID{Prefix: "iot"}),
+		Model("iot_device",
+			Field("id", "iot_device_id", PrimaryKey),
+			Field("name", "string", Unique),
+			Field("last_ping", "time", Null),
+			Field("iot_device_status", "device_status"),
 		),
 
 		Type("vehicle_id", bunnyid.ID{Prefix: "v"}),
@@ -78,7 +86,8 @@ func main() {
 			Field("current_user_id", "user_id", Null, ForeignKey("user")),
 			Field("last_user_id", "user_id", Null, ForeignKey("user")),
 			Field("number_plate", "string", Unique),
-			Field("helmet_id", "helmet_id", ForeignKey("helmet"), Index),
+			Field("helmet_id", "helmet_id", ForeignKey("helmet")),
+			Field("iot_device_id", "iot_device_id", ForeignKey("iot_device")),
 		),
 
 		Type("ride_id", bunnyid.ID{Prefix: "r"}),
