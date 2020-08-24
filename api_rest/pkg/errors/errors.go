@@ -27,6 +27,6 @@ func PanicError(err error) {
 
 func ErrJsonResponse(ctx *gin.Context, err *gin.Error, code int) {
 	ctx.AbortWithStatusJSON(code, gin.H{
-		"error": err.Error(),
+		"error": err.Err.Error(),
 	})
 }

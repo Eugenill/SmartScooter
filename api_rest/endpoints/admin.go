@@ -21,26 +21,26 @@ func AddAdmin(group *gin.RouterGroup, mqttConf mqtt_sub.MQTTConfig) {
 	usr.POST("/get", user.AdminGetUsers())
 
 	r := group.Group("/ride")
-	r.GET("/create", ride.CreateRide())
-	r.GET("/finish", ride.FinishRide())
-	r.POST("/get", ride.AdminGetRides())
+	r.POST("/create", ride.CreateRide())
+	r.POST("/finish", ride.FinishRide())
+	r.GET("/get", ride.AdminGetRides())
 
 	veh := group.Group("/vehicle")
 	veh.POST("/create", vehicle.CreateVehicle())
 	veh.POST("/delete", vehicle.AdminDeleteVehicle())
-	veh.POST("/get", vehicle.AdminGetVehicles())
+	veh.GET("/get", vehicle.AdminGetVehicles())
 
 	helm := group.Group("/helmet")
 	helm.POST("/create", helmet.CreateHelmet())
 	helm.POST("/delete", helmet.AdminDeleteHelmet())
-	helm.POST("/get", helmet.AdminGetHelmets())
+	helm.GET("/get", helmet.AdminGetHelmets())
 
 	iot := group.Group("/iot_dev")
 	iot.POST("/create", iot_dev.CreateIotDev())
 	iot.POST("/delete", iot_dev.AdminDeleteIotDev())
-	iot.POST("/get", iot_dev.AdminGetIotDevs())
+	iot.GET("/get", iot_dev.AdminGetIotDevs())
 
 	rd := group.Group("/ride_detections")
-	rd.GET("/get", ride.AdminGetDetections())
+	rd.POST("/get", ride.AdminGetDetections())
 
 }

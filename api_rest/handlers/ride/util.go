@@ -8,10 +8,13 @@ import (
 	"github.com/sqlbunny/sqlbunny/runtime/qm"
 )
 
-func CheckRide(ctx context.Context, id models.RideID) (bool, error) {
-	_, err := models.FindRide(ctx, id)
+func CheckVehicle(ctx context.Context, id models.VehicleID) (bool, error) {
+	veh, err := models.FindVehicle(ctx, id)
 	if err != nil {
 		return false, err
+	}
+	if veh.CurrentUserID.Valid || veh.CurrentRideID.Valid {
+		return false, nil
 	}
 	return true, nil
 }
@@ -52,4 +55,8 @@ func CalcDistance(ctx context.Context, path geo.LineStringM) (float32, error) {
 
 type ReqRide struct {
 	ID models.RideID `json:"id"`
+}
+
+type ReqVeh struct {
+	VehicleID models.VehicleID `json:"vehicle_id"`
 }

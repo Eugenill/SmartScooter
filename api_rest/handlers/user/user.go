@@ -18,7 +18,7 @@ import (
 func AdminCreateUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		usr := ReqUser{}
+		usr := &ReqUser{}
 		var ginError *gin.Error
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
@@ -50,10 +50,9 @@ func AdminCreateUser() gin.HandlerFunc {
 					Username:     usr.Username,
 					Secret:       usr.Secret,
 					ContactEmail: usr.ContactEmail,
+					PhoneNumber:  usr.PhoneNumber,
 					Admin:        usr.Admin,
 					CreatedAt:    time.Now(),
-					IsDeleted:    false,
-					DeletedAt:    _import00.Time{},
 				}
 				if err = o.Insert(ctx); err != nil {
 					return err
@@ -74,7 +73,7 @@ func AdminCreateUser() gin.HandlerFunc {
 func AdminDeleteUser() gin.HandlerFunc {
 	return func(ctxGin *gin.Context) {
 		r := ctxGin.Request
-		usr := ReqUser{}
+		usr := &ReqUser{}
 		var ginError *gin.Error
 		ctx := db.GinToContextWithDB(ctxGin)
 		err := bunny.Atomic(ctx, func(ctx context.Context) error {
@@ -212,7 +211,7 @@ func AdminGetUsers() gin.HandlerFunc {
 					})
 				}
 			}
-			writters.JsonResponse(ctxGin, gin.H{"message": "User fetched successfully", "users": userResp}, http.StatusOK)
+			writters.JsonResponse(ctxGin, gin.H{"message": "Users fetched successfully", "users": userResp}, http.StatusOK)
 			return nil
 		})
 		if err != nil {

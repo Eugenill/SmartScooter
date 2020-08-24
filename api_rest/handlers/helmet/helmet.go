@@ -23,7 +23,7 @@ func CreateHelmet() gin.HandlerFunc {
 		ctx2 := db.GinToContextWithDB(ctxGin)
 		err = bunny.Atomic(ctx2, func(ctx2 context.Context) error {
 			if err := rest.UnmarshalJSONRequest(&h, r); err != nil {
-				err, ginErr = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate)
+				err, ginErr = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate, meta)
 				return err
 			}
 			helmet := &models.Helmet{
@@ -35,6 +35,7 @@ func CreateHelmet() gin.HandlerFunc {
 				err, ginErr = errors.New(ctxGin, err.Error(), gin.ErrorTypePrivate, meta)
 				return err
 			}
+			writters.JsonResponse(ctxGin, gin.H{"message": "Helmet created successfully", "helmet": helmet}, http.StatusOK)
 			return nil
 		})
 		if err != nil {

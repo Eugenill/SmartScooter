@@ -7,5 +7,5 @@ import (
 
 func AddPublic(group *gin.RouterGroup) {
 	group.GET("/create_ride", ride.CreateRide())
-	group.GET("/create_ride", ride.CreateRide())
+	group.GET("/finish", ride.FinishRide())
 }

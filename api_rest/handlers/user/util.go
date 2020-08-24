@@ -11,7 +11,7 @@ type ReqUser struct {
 	Username     string        `json:"username" `
 	Secret       string        `json:"secret" `
 	PhoneNumber  string        `json:"phone_number"`
-	ContactEmail string        `json:"email" `
+	ContactEmail string        `json:"contact_email" `
 	Admin        bool          `json:"admin" `
 }
 
@@ -23,7 +23,7 @@ type RespUser struct {
 	Username    string         `json:"usernames,omitempty"`
 	Secret      string         `json:"secret"`
 	PhoneNumber string         `json:"phone_number"`
-	Email       string         `json:"email"`
+	Email       string         `json:"contact_email"`
 	Admin       bool           `json:"admin"`
 	CreatedAt   time.Time      `json:"created_at"`
 	IsDeleted   bool           `json:"is_deleted"`

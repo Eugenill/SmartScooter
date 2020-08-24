@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/Eugenill/SmartScooter/api_rest/handlers/reby"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
 	"net/http"
@@ -11,7 +12,6 @@ import (
 
 	"github.com/Eugenill/SmartScooter/api_rest/handlers/auth"
 	"github.com/Eugenill/SmartScooter/api_rest/models"
-	"github.com/Eugenill/SmartScooter/api_rest/pkg/contxt"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/sqlbunny/sqlbunny/runtime/bunny"
@@ -21,42 +21,54 @@ func CreateRide() gin.HandlerFunc {
 	meta := map[string]string{"app": "CreateRide"}
 	return func(ctx *gin.Context) {
 		var ginErr *gin.Error
-		vID := contxt.RequestHeader(ctx, "vehicleID")
-		vehID, err := models.VehicleIDFromString(vID)
-		if err != nil {
-			_, ginErr = errors.New(ctx, "vehicleID not valid", gin.ErrorTypePrivate, meta)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-		}
-
-		user, err := auth.FromContext(ctx)
-		if err != nil {
-			_, ginErr = errors.New(ctx, "user not found in context", gin.ErrorTypePrivate, meta)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-
-		}
-
-		//Call Ride Reby endpoint
-		req, err := http.NewRequest("POST", reby.RebyHost+reby.RebyRide, nil)
-		if err != nil {
-			_, ginErr = errors.New(ctx, "ride call request creation failed", gin.ErrorTypePrivate, meta)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-		} else {
-			req.Header = reby.SetHeaders(vID, reby.BearerETSEIB)
-		}
-		client := http.DefaultClient
-		_, err = client.Do(req)
-		now := time.Now()
-		if err != nil {
-			_, ginErr = errors.New(ctx, "ride call to the scooter failed", gin.ErrorTypePrivate, meta)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-		}
-
-		//Adding ride and updating vehicle
+		vehicle := &ReqVeh{}
+		r := ctx.Request
 		ctx2 := db.GinToContextWithDB(ctx)
-		err = bunny.Atomic(ctx2, func(ctx2 context.Context) error {
+		err := bunny.Atomic(ctx2, func(ctx2 context.Context) error {
+
+			if err := rest.UnmarshalJSONRequest(&vehicle, r); err != nil {
+				err, ginErr = errors.New(ctx, err.Error(), gin.ErrorTypePrivate)
+				return err
+			}
+			vID := vehicle.VehicleID
+			ok, err := CheckVehicle(ctx2, vID)
+			if err != nil {
+				err, ginErr = errors.New(ctx, err.Error(), gin.ErrorTypePrivate)
+				return err
+			}
+			if !ok {
+				err, ginErr = errors.New(ctx, "vehicle not found", gin.ErrorTypePrivate, vehicle)
+				return err
+			}
+
+			user, err := auth.FromContext(ctx)
+			if err != nil {
+				_, ginErr = errors.New(ctx, err.Error(), gin.ErrorTypePrivate, meta)
+				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
+
+			}
+
+			//Call Ride Reby endpoint
+			req, err := http.NewRequest("POST", reby.RebyHost+reby.RebyRide, nil)
+			if err != nil {
+				_, ginErr = errors.New(ctx, "ride call request creation failed", gin.ErrorTypePrivate, meta)
+				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
+			} else {
+				req.Header = reby.SetHeaders(vID.String(), reby.BearerETSEIB)
+			}
+			client := http.DefaultClient
+			_, err = client.Do(req)
+			now := time.Now()
+			if err != nil {
+				_, ginErr = errors.New(ctx, "ride call to the scooter failed", gin.ErrorTypePrivate, meta)
+				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
+			}
+
+			//Adding ride and updating vehicle
+
 			ride := &models.Ride{
 				ID:        models.NewRideID(),
-				VehicleID: vehID,
+				VehicleID: vID,
 				UserID:    user.ID,
 				StartedAt: now,
 			}
@@ -65,17 +77,17 @@ func CreateRide() gin.HandlerFunc {
 				_, ginErr = errors.New(ctx, "ride not inserted", gin.ErrorTypePrivate, meta)
 				return err
 			}
-			veh, err := models.FindVehicle(ctx2, vehID)
+			veh, err := models.FindVehicle(ctx2, vID)
 
 			if err != nil {
-				_, ginErr = errors.New(ctx, "vehicle not found in db", gin.ErrorTypePrivate, vehID, meta)
+				_, ginErr = errors.New(ctx, "vehicle not found in db", gin.ErrorTypePrivate, vID, meta)
 				return err
 			}
 
 			veh.CurrentRideID = models.NullRideIDFrom(ride.ID)
 			veh.CurrentUserID = models.NullUserIDFrom(user.ID)
 			if err = veh.Update(ctx2); err != nil {
-				_, ginErr = errors.New(ctx, "vehicle not updated", gin.ErrorTypePrivate, vehID, meta)
+				_, ginErr = errors.New(ctx, "vehicle not updated", gin.ErrorTypePrivate, vID, meta)
 				return err
 			}
 			writters.JsonResponse(ctx, gin.H{"message": "Ride created successfully", "ride": ride}, http.StatusOK)
@@ -91,16 +103,16 @@ func FinishRide() gin.HandlerFunc {
 	meta := map[string]string{"app": "FinishRide"}
 	return func(ctx *gin.Context) {
 		var ginErr *gin.Error
-		rID := contxt.RequestHeader(ctx, "rideID")
-		rideID, err := models.RideIDFromString(rID)
-		if err != nil {
-			_, ginErr = errors.New(ctx, "rideID not valid", gin.ErrorTypePrivate, meta)
-			errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-		}
+		ride := &ReqRide{}
+		r := ctx.Request
 		//Adding ride and updating vehicle
 		ctx2 := db.GinToContextWithDB(ctx)
-		err = bunny.Atomic(ctx2, func(ctx2 context.Context) error {
-			r, err := models.FindRide(ctx2, rideID)
+		err := bunny.Atomic(ctx2, func(ctx2 context.Context) error {
+			if err := rest.UnmarshalJSONRequest(&ride, r); err != nil {
+				err, ginErr = errors.New(ctx, err.Error(), gin.ErrorTypePrivate)
+				return err
+			}
+			r, err := models.FindRide(ctx2, ride.ID)
 			if err != nil {
 				_, ginErr = errors.New(ctx, "ride not found", gin.ErrorTypePrivate, meta)
 				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
@@ -136,6 +148,7 @@ func FinishRide() gin.HandlerFunc {
 				_, ginErr = errors.New(ctx, "vehicle not updated", gin.ErrorTypePrivate, veh.ID, meta)
 				return err
 			}
+			writters.JsonResponse(ctx, gin.H{"message": "Ride finished successfully", "ride": ride}, http.StatusOK)
 			return nil
 		})
 		if err != nil {

@@ -10,6 +10,7 @@ import (
 
 func PublicBasicAuth() gin.HandlerFunc {
 	accounts := make(gin.Accounts)
+	//accounts["public"] = "1234"
 	var users models.UserSlice
 
 	ctx := &gin.Context{}
@@ -34,7 +35,7 @@ func PublicBasicAuth() gin.HandlerFunc {
 
 func AdminBasicAuth() gin.HandlerFunc {
 	accounts := make(gin.Accounts)
-	accounts["smartscooter"] = "1234"
+	//accounts["smartscooter"] = "1234"
 	var users models.UserSlice
 
 	ctx := &gin.Context{}

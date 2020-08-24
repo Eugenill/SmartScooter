@@ -6,6 +6,7 @@ import (
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/mqtt_sub"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
 	"github.com/gin-gonic/gin"
+	"github.com/sqlbunny/geo"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
 	"time"
 )
@@ -16,8 +17,11 @@ func newDetection() string {
 			String: "red",
 			Valid:  true,
 		},
-		Obstacle:   _import00.String{},
-		Location:   models.Point{Latitude: 42.02514, Longitude: 2.055458, Accuracy: 3.5},
+		Obstacle: _import00.String{},
+		Location: geo.Point{
+			X: 42.02514,
+			Y: 2.055458,
+		},
 		DetectedAt: time.Time{},
 	}
 	return fmt.Sprintf("%s/%s/%v/%s", detection.TrafficLight.String, detection.Obstacle.String, detection.Location, detection.DetectedAt.String())
