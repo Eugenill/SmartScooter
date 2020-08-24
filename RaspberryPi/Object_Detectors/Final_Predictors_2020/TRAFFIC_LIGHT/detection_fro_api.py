@@ -72,7 +72,6 @@ fps = FPS().start()
 state=1 #green
 relevant_detection = []
 max_confidence = ( 0.7, 0.2)
-
 # loop over the frames from the video stream
 while True:
 	# grab the frame from the threaded video stream and resize it
@@ -147,7 +146,7 @@ while True:
 					l=i
 			if l!=1:		
 				relevant_detection=l
-	state = relevant_detection[1]
+	
 
 	#crop_img = frame[startY:endY, startX:endX]
 	#if len(crop_img) != 0:
@@ -162,13 +161,14 @@ while True:
 	#image_text = base64.b64decode(crop_img)
 	         #create client object
                   #establish connection
-	#MQTT publish
-	light.publish(pretopic+"RP1_detection",str(relevant_detection[0]) + '/' + CLASSES[relevant_detection[1]]+"/"+str(relevant_detection[6]))                   #publish
-	#light.publish("light/TL/class",relevant_detection[1])                   #publish
-	#light.publish("light/TL/box",str(relevant_detection[2])+'/'+str(relevant_detection[3])+'/'+str(relevant_detection[4]) + '/' + str(relevant_detection[5])                   #publish
-	#light.publish("light/TL/class",relevant_detection)                   #publish
-	#light.publish("light/TL/image",crop_img)
-		
+	if relevant_detection[1] != state :
+		#MQTT publish
+		light.publish(pretopic+"RP1_detection",str(relevant_detection[0]) + '/' + CLASSES[relevant_detection[1]]+"/"+str(relevant_detection[6]))                   #publish
+		#light.publish("light/TL/class",relevant_detection[1])                   #publish
+		#light.publish("light/TL/box",str(relevant_detection[2])+'/'+str(relevant_detection[3])+'/'+str(relevant_detection[4]) + '/' + str(relevant_detection[5])                   #publish
+		#light.publish("light/TL/class",relevant_detection)                   #publish
+		#light.publish("light/TL/image",crop_img)
+		state = relevant_detection[1]
 	# show the output frame
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
