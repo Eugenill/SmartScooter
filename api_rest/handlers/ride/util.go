@@ -49,3 +49,7 @@ func CalcDistance(ctx context.Context, path geo.LineStringM) (float32, error) {
 	}
 	return res, nil
 }
+
+type ReqRide struct {
+	ID models.RideID `json:"id"`
+}

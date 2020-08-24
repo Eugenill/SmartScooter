@@ -40,7 +40,7 @@ func AddAdmin(group *gin.RouterGroup, mqttConf mqtt_sub.MQTTConfig) {
 	iot.POST("/delete", iot_dev.AdminDeleteIotDev())
 	iot.POST("/get", iot_dev.AdminGetIotDevs())
 
-	//	rd := group.Group("/ride_detections")
-	//rd.GET("/get", ride.GetDetections())
+	rd := group.Group("/ride_detections")
+	rd.GET("/get", ride.AdminGetDetections())
 
 }
