@@ -23,7 +23,7 @@ net = cv2.dnn.readNetFromTensorflow("frozen_inference_graph.pb", "graph.pbtxt")
 # initialize the video stream, allow the cammera sensor to warmup,
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
-vs = cv2.VideoCapture('../../TL_VIDEOS/Hamburg1.mp4')
+vs = cv2.VideoCapture('final/video.mp4')
 time.sleep(2.0)
 fps = FPS().start()
 
