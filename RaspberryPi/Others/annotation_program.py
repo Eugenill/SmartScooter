@@ -7,7 +7,7 @@ import pygame
 csv_name = 'traffic_sign_annotations'
 model_path = 'RaspberryPi/Others/inference_graph/'
 cvNet = cv.dnn.readNetFromTensorflow(model_path + 'frozen_inference_graph.pb', model_path + 'graph.pbtxt')
-images_path = 'RaspberryPi/Others/images/'
+images_path = '../Data/traffic_sign_dataset/ts/ts/'
 images = os.listdir(images_path)
 colors_list = []
 vertex_list = []
@@ -44,57 +44,59 @@ font2 = pygame.font.SysFont("comicsansms", 40)
 
 def detection_and_paint():
     for next_img in images:
-        print("next image")
-        # Fill the background with white
-        screen.fill((0, 0, 0))
+        if next_img.split(".")[1] == "jpg":
+            print("next image")
+            # Fill the background with white
+            screen.fill((0, 0, 0))
 
-        cv_img = next_image(next_img)
-        rows = cv_img.shape[0]
-        cols = cv_img.shape[1]
-        cv_out = detect(cv_img)
-        i = 0
-        for detection in cv_out[0, 0, :, :]:
-            score = float(detection[2])
-            if score > 0.1:
-                left = detection[3] * cols
-                top = detection[4] * rows
-                right = detection[5] * cols
-                bottom = detection[6] * rows
-                ext = False
-                while True:
-                    display_img(next_img)
-                    # Print rects and text
-                    print_rects_and_text()
-                    rect = pygame.Rect(int(left), int(top), int(right) - int(left), int(bottom) - int(top))
-                    pygame.draw.rect(screen, (23, 230, 210), rect, 2)
-                    text = font2.render(str(i) + "/" + str(len(cv_out[0, 0, :, :])), True, (0, 0, 0))
-                    text_rect = text.get_rect()
-                    text_rect.center = (1000, 20)
-                    screen.blit(text, text_rect)
+            cv_img = next_image(next_img)
+            rows = cv_img.shape[0]
+            cols = cv_img.shape[1]
+            cv_out = detect(cv_img)
+            i = 0
+            for detection in cv_out[0, 0, :, :]:
+                score = float(detection[2])
+                if score > 0.1:
+                    left = detection[3] * cols
+                    top = detection[4] * rows
+                    right = detection[5] * cols
+                    bottom = detection[6] * rows
+                    ext = False
+                    while True:
+                        display_img(next_img)
+                        # Print rects and text
+                        print_rects_and_text()
+                        rect = pygame.Rect(int(left), int(top), int(right) - int(left), int(bottom) - int(top))
+                        pygame.draw.rect(screen, (23, 230, 210), rect, 2)
+                        text = font2.render(str(i) + "/" + str(len(cv_out[0, 0, :, :])), True, (0, 0, 0))
+                        text_rect = text.get_rect()
+                        text_rect.center = (1000, 20)
+                        screen.blit(text, text_rect)
 
-                    pos = pygame.mouse.get_pos()
-                    events = pygame.event.get()
-                    # print(events)
-                    for event in events:
-                        if event and event.type == pygame.QUIT:
-                            pygame.quit()
-                        if event and event.type == pygame.MOUSEBUTTONDOWN:
-                            for enum_vertex in list(enumerate(vertex_list)):
-                                index = enum_vertex[0]
-                                point = enum_vertex[1]
-                                if point[0] < pos[0] < point[0] + 150 and point[1] < pos[1] < point[1] + 80:
-                                    print(names[index])
-                                    data.append(
-                                        [next_img, str(cols), str(rows), names[index], str(left), str(top), str(right),
-                                         str(bottom)])
-                                    ext = True
+                        pos = pygame.mouse.get_pos()
+                        events = pygame.event.get()
+                        # print(events)
+                        for event in events:
+                            if event and event.type == pygame.QUIT:
+                                pygame.quit()
+                            if event and event.type == pygame.MOUSEBUTTONDOWN:
+                                for enum_vertex in list(enumerate(vertex_list)):
+                                    index = enum_vertex[0]
+                                    point = enum_vertex[1]
+                                    if point[0] < pos[0] < point[0] + 150 and point[1] < pos[1] < point[1] + 80:
+                                        print(names[index])
+                                        pygame.draw.rect(screen, (23, 230, 210), rect)
+                                        data.append(
+                                            [next_img, str(cols), str(rows), names[index], str(left), str(top), str(right),
+                                             str(bottom)])
+                                        ext = True
+                                        break
+                                if ext:
                                     break
-                            if ext:
-                                break
-                    if ext:
-                        print("next detection")
-                        break
-                    pygame.display.flip()
+                        if ext:
+                            print("next detection")
+                            break
+                        pygame.display.flip()
 
 
 def define_color(total_of_classes):
