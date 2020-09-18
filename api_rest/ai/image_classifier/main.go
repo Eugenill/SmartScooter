@@ -11,22 +11,17 @@ import (
 	"strings"
 )
 
-type ClassifyResult struct {
-	Filename string        `json:"filename"`
-	Labels   []LabelResult `json:"labels"`
-}
-
 type LabelResult struct {
 	Label       string  `json:"label"`
 	Probability float64 `json:"probability"`
 }
 
 const (
-	H, W     = 180, 180
-	Mean     = float32(45)
+	H, W     = 250, 145
+	Mean     = float32(100)
 	Scale    = float32(1)
 	v1_input = "serving_default_rescaling_1_input"
-	v2_input = "serving_default_sequential_1_input"
+	v2_input = "serving_default_sequential_14_input"
 	output   = "StatefulPartitionedCall"
 )
 
@@ -37,9 +32,9 @@ var (
 )
 
 func init() {
-	labels = append(labels, "daisy", "dandelion", "roses", "sunflowers", "tulips")
+	labels = append(labels, "Incorrect", "QR", "ambiguous", "correct", "police")
 
-	savedModel, err = tf.LoadSavedModel("ai/image_classifier/flower_model_v2", []string{"serve"}, nil)
+	savedModel, err = tf.LoadSavedModel("ai/image_classifier/model_v2", []string{"serve"}, nil)
 	log.Print("Model Loaded")
 	if err != nil {
 		log.Panicf("Could not load model files into tensorflow with error: %v", err)
@@ -104,6 +99,7 @@ func calculate(w http.ResponseWriter, tensor *tf.Tensor) (interface{}, error) {
 			savedModel.Graph.Operation(output).Output(0),
 		},
 		nil)
+	log.Print(result[0].Value().([][]float32)[0])
 	probabilities := SoftMax(result[0].Value().([][]float32)[0])
 	if err != nil {
 		w.WriteHeader(500)

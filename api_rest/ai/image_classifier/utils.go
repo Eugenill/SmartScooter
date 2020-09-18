@@ -1,6 +1,10 @@
 package image_classifier
 
-import "math"
+import (
+	"log"
+	"math"
+	"sort"
+)
 
 func SoftMax(x []float32) []float64 {
 	var max = float64(x[0])
@@ -31,5 +35,18 @@ func returnLabels(probabilities []float64) []LabelResult {
 		}
 		resultLabels = append(resultLabels, LabelResult{Label: labels[i], Probability: p * 100})
 	}
-	return resultLabels
+	return higherFirst(resultLabels)
+}
+
+// Results implements sort.Interface based on the Probability field.
+type Results []LabelResult
+
+func (a Results) Len() int           { return len(a) }
+func (a Results) Less(i, j int) bool { return a[i].Probability < a[j].Probability }
+func (a Results) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
+func higherFirst(labelResults []LabelResult) []LabelResult {
+	sort.Sort(sort.Reverse(Results(labelResults)))
+	log.Print(labelResults)
+	return labelResults
 }

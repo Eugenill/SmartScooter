@@ -47,7 +47,7 @@ func makeTransformImageGraph(imageFormat string) (graph *tf.Graph, input, output
 	// Div and Sub perform (value-Mean)/Scale for each pixel
 	output = op.Div(s,
 		op.Sub(s,
-			// Resize to 180x180 with bilinear interpolation
+			// Resize to HxW with bilinear interpolation
 			op.ResizeBilinear(s,
 				// Create a batch containing a single image
 				op.ExpandDims(s,
