@@ -18,9 +18,9 @@ type LabelResult struct {
 
 const (
 	H, W     = 250, 145
-	Mean     = float32(100)
+	Mean     = float32(20)
 	Scale    = float32(1)
-	v1_input = "serving_default_rescaling_1_input"
+	v1_input = "serving_default_rescaling_input"
 	v2_input = "serving_default_sequential_14_input"
 	output   = "StatefulPartitionedCall"
 )
@@ -34,7 +34,7 @@ var (
 func init() {
 	labels = append(labels, "Incorrect", "QR", "ambiguous", "correct", "police")
 
-	savedModel, err = tf.LoadSavedModel("ai/image_classifier/model_v2", []string{"serve"}, nil)
+	savedModel, err = tf.LoadSavedModel("ai/image_classifier/model_v1", []string{"serve"}, nil)
 	log.Print("Model Loaded")
 	if err != nil {
 		log.Panicf("Could not load model files into tensorflow with error: %v", err)
@@ -93,7 +93,7 @@ func calculate(w http.ResponseWriter, tensor *tf.Tensor) (interface{}, error) {
 	// Run inference
 	result, err := savedModel.Session.Run(
 		map[tf.Output]*tf.Tensor{
-			savedModel.Graph.Operation(v2_input).Output(0): tensor,
+			savedModel.Graph.Operation(v1_input).Output(0): tensor,
 		},
 		[]tf.Output{
 			savedModel.Graph.Operation(output).Output(0),
