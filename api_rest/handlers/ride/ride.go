@@ -2,8 +2,8 @@ package ride
 
 import (
 	"context"
-	"github.com/Eugenill/SmartScooter/api_rest/handlers/reby"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/db"
+	"github.com/Eugenill/SmartScooter/api_rest/pkg/reby_scooter"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/rest"
 	"github.com/Eugenill/SmartScooter/api_rest/pkg/writters"
 	_import00 "github.com/sqlbunny/sqlbunny/types/null"
@@ -45,27 +45,20 @@ func CreateRide() gin.HandlerFunc {
 			if err != nil {
 				_, ginErr = errors.New(ctx, err.Error(), gin.ErrorTypePrivate, meta)
 				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-
 			}
 
+			if user == nil {
+				_, userErr := errors.New(ctx, "user not in context", gin.ErrorTypePrivate, meta)
+				errors.ErrJsonResponse(ctx, userErr, http.StatusBadRequest)
+			}
 			//Call Ride Reby endpoint
-			req, err := http.NewRequest("POST", reby.RebyHost+reby.RebyRide, nil)
-			if err != nil {
-				_, ginErr = errors.New(ctx, "ride call request creation failed", gin.ErrorTypePrivate, meta)
-				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-			} else {
-				req.Header = reby.SetHeaders(vID.String(), reby.BearerETSEIB)
+			errRide := reby_scooter.RideCall(ctx, vID, meta)
+			if errRide != nil {
+				errors.ErrJsonResponse(ctx, errRide, http.StatusBadRequest)
 			}
-			client := http.DefaultClient
-			_, err = client.Do(req)
 			now := time.Now()
-			if err != nil {
-				_, ginErr = errors.New(ctx, "ride call to the scooter failed", gin.ErrorTypePrivate, meta)
-				errors.ErrJsonResponse(ctx, ginErr, http.StatusBadRequest)
-			}
 
 			//Adding ride and updating vehicle
-
 			ride := &models.Ride{
 				ID:        models.NewRideID(),
 				VehicleID: vID,
