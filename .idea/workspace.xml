@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95f58c48-95c8-4a7e-b238-592a10a7b8e5" name="Default Changelist" comment="annotation program">
+      <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/images/example.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/images/image2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/inference_graph/frozen_inference_graph.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/inference_graph/graph.pbtxt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="SOFT" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1hEhu8rKilqwXfhNFllfQeqtalR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GO_FMT" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/RaspberryPi/Others/images" />
+      <recent name="$PROJECT_DIR$/RaspberryPi/Others" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="cleaner detection scripts" />
+    <MESSAGE value="annotation programm created" />
+    <MESSAGE value="annotation program" />
+    <option name="LAST_COMMIT_MESSAGE" value="annotation program" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="172" y="127" width="1648" height="853" key="DiffContextDialog" timestamp="1600126740639">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="172" y="127" width="1648" height="853" key="DiffContextDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1600126740639" />
+    <state x="779" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1600252575120">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="779" y="311" width="424" height="491" key="FileChooserDialogImpl/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600252575120" />
+    <state x="492" y="188" width="1007" height="737" key="SettingsEditor" timestamp="1599582532530">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="492" y="188" width="1007" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1599582532530" />
+    <state x="744" y="265" width="485" height="591" key="VCS.ChangeListViewerDialog" timestamp="1600100413728">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="744" y="265" width="485" height="591" key="VCS.ChangeListViewerDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1600100413728" />
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1600185430433">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600098830916" />
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1600185430433" />
+    <state x="72" y="201" width="1709" height="691" key="editAsTableFormatDialogDimension" timestamp="1601381527044">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="72" y="201" width="1709" height="691" key="editAsTableFormatDialogDimension/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1601381527044" />
+    <state x="579" y="211" width="824" height="691" key="editAsTableFormatDialogDimension/72.27.1848.1053@72.27.1848.1053" timestamp="1600182020117" />
+    <state x="690" y="302" width="623" height="502" key="find.popup" timestamp="1600157342167">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="690" y="302" width="623" height="502" key="find.popup/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600084408224" />
+    <state x="690" y="302" width="623" height="502" key="find.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1600157342167" />
+    <state x="776" y="451" width="430" height="212" key="git4idea.ui.GitResetDialog" timestamp="1600100414671">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="776" y="451" width="430" height="212" key="git4idea.ui.GitResetDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1600100414671" />
+  </component>
+</project>
