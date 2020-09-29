@@ -24,6 +24,7 @@
       <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/images/image2.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/inference_graph/frozen_inference_graph.pb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/RaspberryPi/Others/inference_graph/graph.pbtxt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/traffic_sign_annotations.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,11 +99,11 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="744" y="265" width="485" height="591" key="VCS.ChangeListViewerDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1600100413728" />
-    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1600185430433">
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1601409540880">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600098830916" />
-    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1600185430433" />
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1601409540880" />
     <state x="72" y="201" width="1709" height="691" key="editAsTableFormatDialogDimension" timestamp="1601381527044">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>

@@ -4,10 +4,13 @@ import cv2 as cv
 import pandas as pd
 import pygame
 
-csv_name = 'traffic_sign_annotations'
-model_path = 'RaspberryPi/Others/inference_graph/'
+
+model_path = 'traffic_sign_model/inference_graph/'
 cvNet = cv.dnn.readNetFromTensorflow(model_path + 'frozen_inference_graph.pb', model_path + 'graph.pbtxt')
-images_path = '../Data/traffic_sign_dataset/ts/ts/'
+images_base = 'imatges/'
+images_folder = 'ts_frames'
+images_path = images_base + images_folder+'/'
+csv_name = images_folder
 images = os.listdir(images_path)
 colors_list = []
 vertex_list = []
@@ -19,7 +22,7 @@ class_names = {
     "R-301": "VELOCIDAD MÁXIMA",
     "R-307": "PARA Y ESTAC. PROHIBIDO",
     "R-308": "ESTAC. PROHIBIDO",
-    "S-13": "CEDA",
+    "S-13": "PASO PEATÓN",
     "S-18": "TAXIS",
     "S-19": "BUS STOP",
     "S-28": "CALLE RESIDENCIAL",
@@ -29,7 +32,8 @@ class_names = {
     "red": "SEMÁFORO ROJO",
     "off": "SEMÁFORO OFF",
     "P-18": "OBRAS",
-    "P-21": "NIÑOS"
+    "P-21": "NIÑOS",
+    "other":"OTHER"
 }
 
 data = []
@@ -38,7 +42,7 @@ column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', '
 pygame.init()
 # Set up the drawing window
 screen = pygame.display.set_mode([1300, 1200])
-font = pygame.font.SysFont("comicsansms", 20)
+font = pygame.font.SysFont("comicsansms", 15)
 font2 = pygame.font.SysFont("comicsansms", 40)
 
 
@@ -105,15 +109,15 @@ def define_color(total_of_classes):
 
 
 def rect_vertexes(total_of_classes):
-    next_top_left_vertex = (50, 800)
+    next_top_left_vertex = (0, 800)
     vertex_list.append(next_top_left_vertex)
     for i in range(total_of_classes):
 
-        if next_top_left_vertex[0] >= 850:
-            next_top_left_vertex = (50, next_top_left_vertex[1] + 80)
+        if next_top_left_vertex[0] >= 950:
+            next_top_left_vertex = (0, next_top_left_vertex[1] + 40)
 
         else:
-            next_top_left_vertex = (next_top_left_vertex[0] + 150, next_top_left_vertex[1])
+            next_top_left_vertex = (next_top_left_vertex[0] + 120, next_top_left_vertex[1])
 
         vertex_list.append(next_top_left_vertex)
 
@@ -121,11 +125,11 @@ def rect_vertexes(total_of_classes):
 def print_rects_and_text():
     values = list(class_names.values())
     for i in range(len(class_names)):
-        rect = pygame.Rect(vertex_list[i][0], vertex_list[i][1], 150, 80)
+        rect = pygame.Rect(vertex_list[i][0], vertex_list[i][1], 120, 40)
         pygame.draw.rect(screen, colors_list[i], rect)
         text = font.render(values[i], True, (255, 255, 255), colors_list[i])
         text_rect = text.get_rect()
-        text_rect.center = (vertex_list[i][0] + 50, vertex_list[i][1] + 20)
+        text_rect.center = (vertex_list[i][0] + 60, vertex_list[i][1] + 20)
         screen.blit(text, text_rect)
 
 
