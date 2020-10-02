@@ -1,17 +1,14 @@
 # Import and initialize the pygame library
+import argparse
 import os
+
 import cv2 as cv
 import pandas as pd
 import pygame
 
-
-model_path = 'traffic_sign_model/inference_graph/'
+model_path = 'inference_graph/'
 cvNet = cv.dnn.readNetFromTensorflow(model_path + 'frozen_inference_graph.pb', model_path + 'graph.pbtxt')
-images_base = 'imatges/'
-images_folder = 'ts_frames'
-images_path = images_base + images_folder+'/'
-csv_name = images_folder
-images = os.listdir(images_path)
+
 colors_list = []
 vertex_list = []
 names = []
@@ -33,7 +30,7 @@ class_names = {
     "off": "SEMÁFORO OFF",
     "P-18": "OBRAS",
     "P-21": "NIÑOS",
-    "other":"OTHER"
+    "other": "OTHER"
 }
 
 data = []
@@ -46,18 +43,18 @@ font = pygame.font.SysFont("comicsansms", 15)
 font2 = pygame.font.SysFont("comicsansms", 40)
 
 
-def detection_and_paint():
-    for next_img in images:
+def detection_and_paint(images_path):
+    for next_img in images_path:
         if next_img.split(".")[1] == "jpg":
             print("next image")
             # Fill the background with white
             screen.fill((0, 0, 0))
 
-            cv_img = next_image(next_img)
+            cv_img = next_image(next_img, images_path)
             rows = cv_img.shape[0]
             cols = cv_img.shape[1]
             cv_out = detect(cv_img)
-            i = 0
+            m = 0
             for detection in cv_out[0, 0, :, :]:
                 score = float(detection[2])
                 if score > 0.1:
@@ -67,12 +64,12 @@ def detection_and_paint():
                     bottom = detection[6] * rows
                     ext = False
                     while True:
-                        display_img(next_img)
+                        display_img(next_img, images_path)
                         # Print rects and text
                         print_rects_and_text()
                         rect = pygame.Rect(int(left), int(top), int(right) - int(left), int(bottom) - int(top))
                         pygame.draw.rect(screen, (23, 230, 210), rect, 2)
-                        text = font2.render(str(i) + "/" + str(len(cv_out[0, 0, :, :])), True, (0, 0, 0))
+                        text = font2.render(str(m) + "/" + str(len(cv_out[0, 0, :, :])), True, (0, 0, 0))
                         text_rect = text.get_rect()
                         text_rect.center = (1000, 20)
                         screen.blit(text, text_rect)
@@ -91,7 +88,8 @@ def detection_and_paint():
                                         print(names[index])
                                         pygame.draw.rect(screen, (23, 230, 210), rect)
                                         data.append(
-                                            [next_img, str(cols), str(rows), names[index], str(left), str(top), str(right),
+                                            [next_img, str(cols), str(rows), names[index], str(left), str(top),
+                                             str(right),
                                              str(bottom)])
                                         ext = True
                                         break
@@ -134,8 +132,16 @@ def print_rects_and_text():
 
 
 def setup():
+    # abort if not
+    if create_csv:
+        if not image_path:
+            os.abort()
+    else:
+        if not csv_path:
+            os.abort()
+
     # Add buttons for every class
-    for key in class_names:
+    for key, value in class_names:
         names.append(class_names[key])
 
     define_color(len(class_names))
@@ -148,21 +154,41 @@ def detect(img):
     return cvNet.forward()
 
 
-def next_image(next_img):
+def next_image(next_img, images_path):
     return cv.imread(images_path + next_img)
 
 
-def display_img(next_img):
+def display_img(next_img, images_path):
     img = pygame.image.load(images_path + next_img)
     screen.blit(img, (0, 0))
 
 
 if __name__ == '__main__':
+    # hay que pasar o bien la carpeta para crear
+    # el primer csv, o bien el csv ya empezado
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-csv', action='store',
+                        dest='imported_csv',
+                        help='Store a csv file')
+    parser.add_argument('-folder', action='store',
+                        dest='folder',
+                        help='Store a csv file')
+    parser.add_argument('-empty', action='store',
+                        dest='first_csv',
+                        help='Create csv file of the images without detections')
+    results = parser.parse_args()
+
+    csv_path = results.imported_csv
+    create_csv = results.first_csv
+    image_path = results.folder
+
     setup()
     # print(vertex_list)
     # print(colors_list)
     # print(class_names)
     detection_and_paint()
+
+
     data = list(map(list, zip(*data)))
     print(data)
     dict = {}
