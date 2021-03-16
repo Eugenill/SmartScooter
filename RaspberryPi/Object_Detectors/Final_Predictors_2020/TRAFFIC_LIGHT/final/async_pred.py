@@ -21,9 +21,9 @@ from argparse import ArgumentParser, SUPPRESS
 import cv2
 import time
 import logging as log
-import paho.mqtt.client as paho
 import base64
 import json 
+import ngraph as ng
 
 from openvino.inference_engine import IENetwork, IECore
 
@@ -51,55 +51,11 @@ def build_argparser():
 
     return parser
 
-def mqtt_connect():
-    broker="maqiatto.com" #host
-    port=1883
-    username = "eugeni.llagostera@gmail.com"
-    password = "asdf1234"
-    light = paho.Client("Traffic_lights") 
-    stop = False
-    slow = False
-    pretopic="eugeni.llagostera@gmail.com/"
-    def on_connect(light, obj, flags, rc):
-        print("rc: {}".format(rc))
-        light.subscribe("light/TL/stop", 0)
-        light.subscribe("light/TL/speed", 0)
-        
-    def on_publish(light,userdata,result):   
-        light.subscribe("light/TL/stop", 0)          #create function for callback
-        light.subscribe("light/TL/speed", 0)
-
-    def on_message(light, userdata, msg):
-        print('New message recieved -> topic:{} - payload:{}'.format(msg.topic, msg.payload))
-        global slow
-        if msg.payload == b'stop':
-            global stop 
-            stop = True
-            print('Execution interrupted')
-        elif msg.payload==b"slow":
-            
-            slow = True
-            print ("Riding slowly")
-        elif msg.payload==b"fast":
-            
-            slow = False
-            print ("Riding fast")       
-
-    light.on_publish = on_publish    
-    light.on_message = on_message    
-    light.on_connect = on_connect          #assign function to callback
-    light.username_pw_set(username, password)
-    light.connect(broker,port) 
-    light.loop_start()
-
-    return true
-
 def main():
     
-    if mqtt_connect():
-        log.info("Connected to MQTT Broker...")        
-
     log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
+    
+    #Load model
     args = build_argparser().parse_args()
     model_xml = args.model
     model_bin = os.path.splitext(model_xml)[0] + ".bin"
@@ -110,11 +66,15 @@ def main():
         ie.add_extension(args.cpu_extension, "CPU")
     # Read IR
     log.info("Loading network files:\n\t{}\n\t{}".format(model_xml, model_bin))
-    net = IENetwork(model=model_xml, weights=model_bin)
-
+    net = ie.read_network(model=model_xml, weights=model_bin)
+    function = ng.function_from_cnn(net)
     if "CPU" in args.device:
+    	#Check supported layers
         supported_layers = ie.query_network(net, "CPU")
-        not_supported_layers = [l for l in net.layers.keys() if l not in supported_layers]
+        not_supported_layers = []
+        for l in function.get_ordered_ops():
+          if l.get_friendly_name() not in supported_layers:
+          	not_supported_layers.append(l.get_friendly_name())
         if len(not_supported_layers) != 0:
             log.error("Following layers are not supported by the plugin for specified device {}:\n {}".
                       format(args.device, ', '.join(not_supported_layers)))
@@ -177,16 +137,6 @@ def main():
 
     while cap.isOpened():
 
-        list_of_detections = [] #Restart the list of detections
-        count = True #restart count for new image
-        d_min=10000
-        p_max=0
-        k=0
-        l=0
-        if slow:
-          l=1 
-
-
         if is_async_mode:
             ret, next_frame = cap.read()
             next_frame = cv2.cvtColor(next_frame, cv2.COLOR_RGB2BGR)
@@ -227,65 +177,15 @@ def main():
                     xmax = int(obj[5] * frame_w)
                     ymax = int(obj[6] * frame_h)
                     class_id = int(obj[1])
-                    print(str(obj))
-                    distance=15*10/(ymax-ymin)
-                    list_of_detections.append([obj[2], class_id, xmin, ymin, xmax, ymax, distance])   
+                    #print(str(obj))
+                    
 
                     # Draw box and label\class_id
                     
-                    #color = (min(class_id * 12.5, 255), min(class_id * 7, 255), min(class_id * 5, 255))
-                    #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color, 2)
-                    #det_label = labels_map[class_id] if labels_map else str(class_id)
-                    #cv2.putText(frame, det_label + ' ' + str(round(obj[2] * 100, 1)) + ' %', (xmin, ymin - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
-                    
-
-            #now we have to compare the las tdetection choosen as relevant ot the ones detected now
-            list_of_detections.sort()
-            list_of_detections.reverse() #in order of more confidence
-            if list_of_detections != []:
-                if not slow:
-                    if relevant_detection==[]:
-                            relevant_detection=list_of_detections[0] #if not finded any detection similar to the last one we take the one with most confidence
-                    for i in list_of_detections:
-                        if ((relevant_detection[2]-10)<= i[2] <= (relevant_detection[2]+10)) and ((relevant_detection[3]-10)<= i[3] <= (relevant_detection[3]+10)) and ((relevant_detection[4]-10)<= i[4] <= (relevant_detection[4]+10)) and ((relevant_detection[5]-10)<= i[5] <= (relevant_detection[5]+10)): 
-                            relevant_detection=i
-                            count=False
-                    if count:
-                        for i in list_of_detections:
-                            if i[6]<d_min:
-                                d_min=i[6]
-                                l=i
-                            if i[0]>p_max:
-                                p_max=i[0]
-                                k=i
-                            if l[0]/l[6]>k[0]/k[6]:
-                                relevant_detection=l
-                            else:
-                                relevant_detection=k    
-                elif slow:
-                    if relevant_detection==[]:
-                            relevant_detection=list_of_detections[0] #if not finded any detection similar to the last one we take the one with most confidence
-                    for i in list_of_detections:
-                        if abs(relevant_detection[6]-i[6])<=5 and relevant_detection[6]-i[6]<d_min :
-                            d_min=i[6]
-                            l=i
-                    if l!=1:        
-                        relevant_detection=l
-
-            # Draw box and label\class_id
-            cv2.rectangle(frame, (relevant_detection[2], relevant_detection[3]), (relevant_detection[4], relevant_detection[5]), color, 2)
-            det_label = labels_map[relevant_detection[1]] if labels_map else str(relevant_detection[1])
-            cv2.putText(frame, det_label + ' ' + str(round(relevant_detection[0] * 100, 1)) + ' %', (relevant_detection[2], relevant_detection[3] - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
-            
-            
-            if relevant_detection[1] != state :
-                    #MQTT publish
-                    light.publish(pretopic+"RP1_detection",str(relevant_detection[0]) + '/' + CLASSES[relevant_detection[1]]+"/"+str(relevant_detection[6]))                   #publish
-                    #light.publish("light/TL/class",relevant_detection[1])                   #publish
-                    #light.publish("light/TL/box",str(relevant_detection[2])+'/'+str(relevant_detection[3])+'/'+str(relevant_detection[4]) + '/' + str(relevant_detection[5])                   #publish
-                    #light.publish("light/TL/class",relevant_detection)                   #publish
-                    #light.publish("light/TL/image",crop_img)
-                    state = relevant_detection[1]
+                    color = (min(class_id * 12.5, 255), min(class_id * 7, 255), min(class_id * 5, 255))
+                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color, 2)
+                    det_label = labels_map[class_id] if labels_map else str(class_id)
+                    cv2.putText(frame, det_label + ' ' + str(round(obj[2] * 100, 1)) + ' %', (xmin, ymin - 7), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 1)
 
             # Draw performance stats
             inf_time_message = "Inference time: N\A for async mode" if is_async_mode else \
