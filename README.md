@@ -22,7 +22,7 @@ To create the model, git clone this repository to SmartScooter1996 google accoun
 
 4. Together with multiprocessing scripts we can further optimize the model (Same steps for CONE model).
     - Download the Openvino 2020.1 Linux Package (install all needed dependences)
-    - Use mo_tf.py, --input_model [TL_v5/frozen_infrence_graph.pb](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/frozen_infrence_graph.pb) --tensorflow_object_detection_api_pipeline_config [pipeline.config](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/pipeline.config) --tensorflow_use_custom_operations_config [Download this one](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/ssd_support_api_v1.15.json) --generate_deprecated_IR_V7 --data_type FP16 --batch 1  
+    - Use `mo_tf.py --input_model [TL_v5/frozen_infrence_graph.pb](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/frozen_infrence_graph.pb) --tensorflow_object_detection_api_pipeline_config [pipeline.config](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/pipeline.config) --tensorflow_use_custom_operations_config [Download this one](Object_Detectors/TRAFFIC_LIGHTS/TL_W_COLORS/new_models/TL_v5/ssd_support_api_v1.15.json) --generate_deprecated_IR_V7 --data_type FP16 --batch 1`
     - Once we have the [.xml and .bin files](Object_Detectors/TRAFFIC_LIGHTS/new_models/TL_v5/OPENVINO)
     - Download the last version (2020.1) Openvino Raspberry, following this [steps](https://www.pyimagesearch.com/2019/04/08/openvino-opencv-and-movidius-ncs-on-the-raspberry-pi/)
     - Use this [prediction script](Object_Detectors/TRAFFIC_LIGHTS/Prediction/async_prediction.py) to predict with multiprocessing with NCS conected, (BRG2RGB must be added!)
