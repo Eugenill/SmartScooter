@@ -1,7 +1,7 @@
 package endpoints
 
 import (
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/handlers/image_classifier"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/handlers/image_classifier"
 	"github.com/gin-gonic/gin"
 )
 

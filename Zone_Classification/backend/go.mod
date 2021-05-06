@@ -1,4 +1,4 @@
-module github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO
+module github.com/Eugenill/SmartScooter/Zone_Classifier/backend
 
 require (
 	github.com/gin-gonic/gin v1.6.3

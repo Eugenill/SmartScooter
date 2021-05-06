@@ -3,8 +3,8 @@ package image_classifier
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/ai/image_classifier/zone_class"
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/pkg/utils"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/ai/image_classifier/zone_class"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/pkg/utils"
 	"github.com/gin-gonic/gin"
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"io"

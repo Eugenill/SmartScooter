@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/endpoints"
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/pkg/errors"
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/server"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/endpoints"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/pkg/errors"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/server"
 	"github.com/gin-gonic/gin"
 )
 

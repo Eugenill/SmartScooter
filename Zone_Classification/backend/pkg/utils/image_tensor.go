@@ -2,7 +2,7 @@ package utils
 
 import (
 	"bytes"
-	"github.com/Eugenill/SmartScooter/RaspBerryPi/Zone_Classifier/Backend-GO/ai/image_classifier/zone_class"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/ai/image_classifier/zone_class"
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
 	"log"
