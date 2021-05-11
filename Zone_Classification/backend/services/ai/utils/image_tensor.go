@@ -2,10 +2,9 @@ package utils
 
 import (
 	"bytes"
-	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/ai/image_classifier/zone_class"
+	"github.com/Eugenill/SmartScooter/Zone_Classifier/backend/ai_models/image_classifier/zone_class"
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
-	"log"
 )
 
 func MakeTensorFromImage(imageBuffer *bytes.Buffer, imageFormat string) (*tf.Tensor, error) {
@@ -39,7 +38,7 @@ func makeTransformImageGraph(imageFormat string) (graph *tf.Graph, input, output
 	input = op.Placeholder(s, tf.String)
 	// Decode PNG or JPEG
 	var decode tf.Output
-	log.Printf("Image format: %s", imageFormat)
+	//log.Printf("Image format: %s", imageFormat)
 	if imageFormat == "png" {
 		decode = op.DecodePng(s, input, op.DecodePngChannels(3))
 	} else {
