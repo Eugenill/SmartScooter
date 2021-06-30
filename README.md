@@ -1,8 +1,8 @@
 # Smart Scooter Project
 
-This project is formed by a group of students and professors at the UPC-ETSEIB with the aim of developing technological systems that convert a conventional electric scooter to an intelligent one.
+This project is formed by a group of students and professors at the [UPC-ETSEIB](https://etseib.upc.edu) with the aim of developing technological systems that convert a conventional electric scooter to an intelligent one.
 
-​The challenge was to overcome the challenges of the Smart [Scooter Challenge](http://www.smartmotochallenge.org/castelloli-smart-scooter-challenge/home.html). However there has been more developements. You can find more information avout them in the oficial [Smart Sooter Etseib website](https://eugenillagostera.wixsite.com/smartscooter).
+​The challenge was to overcome the challenges of the [Smart Scooter Challenge](http://www.smartmotochallenge.org/castelloli-smart-scooter-challenge/home.html). However there has been more developements. You can find more information avout them in the oficial [Smart Sooter Etseib website](https://eugenillagostera.wixsite.com/smartscooter).
 
 
 ## [Object Detectors](object_detectors)
