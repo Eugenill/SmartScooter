@@ -4,11 +4,12 @@
 
 To create the model, git clone this repository to your Google Colab, and follow the instructions of one of this two ipynb:
 - [Traffic Lights](TRAFFIC_LIGHTS/TL_object_detector.ipynb)
-  <img src="TRAFFIC_LIGHTS/traffic_lights.png" width="200">
-
 - [Cones](CONES/CONES_object_detector.ipynb)
-  <img src="CONES/cones.png" width="200">
-  
+
+Examples:
+<img src="TRAFFIC_LIGHTS/traffic_lights.png" width="600">
+<img src="CONES/cones.png" width="600">
+
 ## Inference time
 1. Prepare models for OpenCV
     Once you have created the graph.pbtxt with the frozen_inference_graph.pb, and replaced "AddV2" for "Add" in the graph.pbtxt. We have to export the frozen_inference_graph.pb and the graph.pbtxt (i.e. export all the new_model in zip format). 
