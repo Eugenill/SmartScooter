@@ -3,19 +3,23 @@
 ## Create the model
 
 To create the model, git clone this repository to your Google Colab, and follow the instructions of one of this two ipynb:
-- [CONE](CONES/CONES_object_detector.ipynb)
-- [TL](TRAFFIC_LIGHTS/TL_object_detector.ipynb)
+- [Traffic Lights](TRAFFIC_LIGHTS/TL_object_detector.ipynb)
+  ![Traffic lights detection](traffic_lights.png)
+
+- [Cones](CONES/CONES_object_detector.ipynb)
+  ![Cones detection](cones.png)
 
 ## Inference time
 1. Prepare models for OpenCV
     Once you have created the graph.pbtxt with the frozen_inference_graph.pb, and replaced "AddV2" for "Add" in the graph.pbtxt. We have to export the frozen_inference_graph.pb and the graph.pbtxt (i.e. export all the new_model in zip format). 
-    - Here are the new_models ready for inference:
-        [CONE](CONES/new_models)
-        [Traffic Ligts](TRAFFIC_LIGHTS/TL_W_COLORS/new_models)
+    
+    Here are the new_models ready for inference:
+      - [Traffic Ligts](TRAFFIC_LIGHTS/TL_W_COLORS/new_models)
+      - [Cones](CONES/new_models)
 2. Prediction scripts with OpenCV
    Use prediction scripts with OpenCv newtwork, remember to use the latest OpenCV version (here used 4.4.0, https://opencv.org/releases/):
-    - [Cones](Prediction/CONES)
     - [Traffic Lights](Prediction/TRAFFIC_LIGHTS)
+    - [Cones](Prediction/CONES)
   
 3. Install OPENVINO
    Together with the Intel Movidius NCS we can obtain more speed in the RaspberryPi 4B (4GB RAM). Follow this installation instructions: https://www.pyimagesearch.com/2019/04/08/openvino-opencv-and-movidius-ncs-on-the-raspberry-pi/
