@@ -4,7 +4,10 @@
 
 To create the model, git clone this repository to your Google Colab, and follow the instructions of one of this two ipynb:
 - [Zone Classifier](Zone_Classifier.ipynb)
-![Model evaluation](evaluation.png)
+
+## Evaluation Results
+
+![Model evaluation](evaluation.png | width=200)
 
 
 ## Backend
@@ -17,8 +20,8 @@ It will load the saved model on the **ai_models** folder and listen and serve HT
 To send POST requests, refer to the [Node-RED flow](../dashboards/zone_classifier.json).It doesn't count with any DB. Just request and response.
 
 Some examples:
-![Bike lane](carril_bici.png)
-![Sidewalk](acera.png)
+![Bike lane](carril_bici.png | width=200)
+![Sidewalk](acera.png | width=200)
 
 
 It has been created following the SOLID principles and trying to adapt it to the Hexagonal architechture, separating functionalities as: Service > App > Model Inference.

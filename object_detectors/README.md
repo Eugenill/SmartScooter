@@ -4,10 +4,10 @@
 
 To create the model, git clone this repository to your Google Colab, and follow the instructions of one of this two ipynb:
 - [Traffic Lights](TRAFFIC_LIGHTS/TL_object_detector.ipynb)
-  ![Traffic lights detection](traffic_lights.png)
+  ![Traffic lights detection](TRAFFIC_LIGHTS/traffic_lights.png | width=200)
 
 - [Cones](CONES/CONES_object_detector.ipynb)
-  ![Cones detection](cones.png)
+  ![Cones detection](CONES/cones.png | width=200)
 
 ## Inference time
 1. Prepare models for OpenCV
