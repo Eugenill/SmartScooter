@@ -7,6 +7,7 @@ To create the model, git clone this repository to your Google Colab, and follow 
 - [Cones](CONES/CONES_object_detector.ipynb)
 
 Examples:
+
 <img src="TRAFFIC_LIGHTS/traffic_lights.png" width="600">
 <img src="CONES/cones.png" width="600">
 

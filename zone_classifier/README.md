@@ -20,6 +20,7 @@ It will load the saved model on the **ai_models** folder and listen and serve HT
 To send POST requests, refer to the [Node-RED flow](../dashboards/zone_classifier.json).It doesn't count with any DB. Just request and response.
 
 Examples:
+
 <img src="carril_bici.png" width="600">
 <img src="acera.png" width="600">
 

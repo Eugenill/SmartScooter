@@ -15,6 +15,7 @@ To display the information of every solution, there is a Node-RED flow (.json) f
 This [flow](dashboards/helmet) uses the Teachable Machine tool (together with the [TM node-red node](https://flows.nodered.org/node/node-red-contrib-teachable-machine)) and a Telegramm Bot, to classify wether the rider wears or not a safety helmet.
 
 Examples:
+
 <img src="dashboards/helmet_detector.png" width="600">
 
 ## [Helmet](helmet)
