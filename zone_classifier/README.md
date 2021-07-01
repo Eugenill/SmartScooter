@@ -7,7 +7,7 @@ To create the model, git clone this repository to your Google Colab, and follow 
 
 ## Evaluation Results
 
-![Model evaluation](evaluation.png | width=200)
+<img src="evaluation.png" width="200">
 
 
 ## Backend
@@ -20,8 +20,8 @@ It will load the saved model on the **ai_models** folder and listen and serve HT
 To send POST requests, refer to the [Node-RED flow](../dashboards/zone_classifier.json).It doesn't count with any DB. Just request and response.
 
 Some examples:
-![Bike lane](carril_bici.png | width=200)
-![Sidewalk](acera.png | width=200)
+<img src="carril_bici.png" width="200">
+<img src="acera.png" width="200">
 
 
 It has been created following the SOLID principles and trying to adapt it to the Hexagonal architechture, separating functionalities as: Service > App > Model Inference.

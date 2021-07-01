@@ -1,5 +1,5 @@
 # 3D Helmet Design
-![3D Helmet](3d_helmet.png)
+<img src="3d_helmet.png">
 
 # 8x8 Led's matrix 
-![Led's matrix](led_matrix.png)
+<img src="led_matrix.png">
